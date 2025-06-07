@@ -1,0 +1,200 @@
+@import url('navbar.css');
+@import url('button.css');
+
+
+/* Introduction Box */
+.intro-box {
+    padding-top: 60px;
+    padding-right: 70px;
+    width: 100vw;
+    min-height: 140vh;
+    display: flex;
+    justify-content: space-evenly;
+    background: linear-gradient(to bottom, #b1daf8, #f5f5f7);
+}
+
+@media(max-width: 750px) {
+    .intro-box {
+        padding-right: 0px;
+    }
+}
+
+
+/* Name Box */
+.intro-name {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 5vh;
+    margin-left: 3vh; 
+    gap: 2vw;
+    padding-top: 5%;
+    padding-left: 2%;
+    flex: 1;
+}
+
+
+/* Profile Image */
+.intro-image {
+    height: 15vw;
+    width: 15vw;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #000000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f8f8;
+
+    
+}
+
+.profile-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    border: 0.2vw solid #ffffff;
+    border-radius: 50%;
+
+    min-width: 120px;
+    min-height: 120px;
+    max-width: 250px;
+    max-height: 250px;
+}
+
+
+/* Profile Name */
+.intro-greet {
+    font-size: 5.5rem;
+}
+
+
+/* About intro Box */
+.intro-about {
+    height: 100%;
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 16%;
+    gap: 40px;
+}
+
+
+/* Work Desciption */
+.intro-work {
+    font-size: 2.5rem;
+}
+
+.intro-detail {
+    font-weight: 300;
+}
+
+.intro-connect {
+    padding-top: 10%;
+}
+
+
+.work-btn {
+    font-size: 1.2rem;
+    background-color: transparent;
+    color: #000000;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.work-btn:hover {
+  background-color: #eeeeee;
+}
+
+.work-btn:active {
+  transform: scale(0.95);
+}
+
+
+.intro-bottom {
+    position: relative;
+    width: 100vw;
+
+}
+
+.intro-bottom img {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    max-width: 100%;
+}
+
+@media(max-width: 750px) {
+
+    .intro-box {
+      flex-direction: column;
+      padding-top: 100px;
+      padding-right: 0px;
+      min-height: 100vh;
+      justify-content: flex-start;
+      overflow: hidden;
+    }
+
+    .intro-name {
+      width: 430px;
+      height: 100px;
+        margin-left: 2vh; 
+        gap: 2vh;
+        padding-top: 0%;
+        margin-bottom: 0px;
+        padding-bottom: 0px;
+        overflow:hidden;
+    }
+
+
+
+    /* Profile Image */
+    .intro-image {
+        height: 25vw;
+        width: 25vw;
+    }
+
+
+    /* Profile Name */
+    .intro-greet {
+        font-size: 13vw;
+    }
+
+
+    /* About intro Box */
+    .intro-about {
+      top: 5vw;
+        height: 0%;
+        width: 100%;
+        padding-top: 0%;
+        padding-left: 3.5vh;
+        gap: 5vw;
+        transform: translateY(-25vh);
+    }
+
+
+    /* Work Desciption */
+    .intro-work {
+        font-size: 6vw;
+    }
+
+    .intro-detail {
+      font-size: 4vw;
+        font-weight: 300;
+    }
+
+    .intro-connect {
+        padding-top:3vh;
+    }
+
+    .work-btn {
+      margin-left: 7vw;
+    }
+}

@@ -1,0 +1,57 @@
+.btn {
+  position: relative;
+  font-size: 1.2rem;
+  background: #111;
+  color: #fff;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-right: 0px;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.btn:hover {
+  background: #444444;
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+
+.btn::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  background: linear-gradient(
+    45deg,
+    #f00, #f73, #fffb00, #48ff00,
+    #00ffd5, #02f, #f0c, #f00
+  );
+  background-size: 600%;
+  filter: blur(6px);
+  animation: glowing 20s linear infinite;
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  z-index: -1;
+}
+
+.btn:hover::before {
+  opacity: 0.5;
+}
+
+.btn:active::after {
+  background: transparent;
+}
+
+@keyframes glowing {
+  0% { background-position: 0 0; }
+  50% { background-position: 400% 0; }
+  100% { background-position: 0 0; }
+}
