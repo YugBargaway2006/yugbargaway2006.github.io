@@ -277,7 +277,7 @@ export function InteractiveTerminal() {
                                 "italic text-base md:text-lg leading-relaxed border-l-4 pl-4 py-2 my-4 rounded-r-lg",
                                 theme === "dark" ? "border-[#ffbd2e] bg-white/5 text-gray-300" : "border-[#d33682] bg-[#fdf6e3] text-[#657b83]"
                             )}>
-                                "Pushing the boundaries of High Performance Computing and Machine Learning. I build systems that scale and intelligence that adapts."
+                                "Driven by curiosity, fueled by exploration. I thrive on solving complex problems and building systems that push the limits of what's possible."
                             </p>
 
                             <div className="text-sm opacity-80 mt-8">

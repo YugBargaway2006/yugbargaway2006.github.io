@@ -18,7 +18,7 @@ export default function Home() {
   if (!mounted) return null;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-5rem)] p-4">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-5rem)] max-h-[calc(100vh-5rem)] overflow-hidden p-4">
       {/* Interactive Terminal */}
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}

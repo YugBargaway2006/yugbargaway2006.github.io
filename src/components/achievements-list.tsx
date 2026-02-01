@@ -19,18 +19,20 @@ interface Achievement {
 const achievements: Achievement[] = [
     {
         id: "ach1",
-        title: "JEE Advanced & Mains 2024",
-        organization: "Joint Entrance Examination",
+        title: "Codeforces Expert (1612)",
+        organization: "Codeforces",
         date: "2024",
-        icon: "trophy",
-        description: "Qualified for admissions to IITs with strong performance in both examinations",
+        icon: "award",
+        description: "Expert rating demonstrating strong algorithmic problem-solving and competitive programming skills.",
         details: `
-      <p>Achieved exceptional results in both JEE Advanced and JEE Mains examinations, demonstrating strong conceptual understanding and problem-solving abilities.</p>
+      <p>Achieved Codeforces Expert rating (1612), demonstrating strong expertise in:</p>
       <ul class="list-disc pl-5 space-y-2 mt-4">
-        <li><strong>JEE Advanced:</strong> Qualified with competitive rank, showcasing deep conceptual mastery</li>
-        <li><strong>JEE Mains:</strong> Achieved top percentile performance among over 1 million candidates</li>
+        <li>Algorithmic problem-solving under time constraints</li>
+        <li>Advanced data structures and algorithms</li>
+        <li>Competitive programming strategies and optimization techniques</li>
+        <li>Efficient code implementation and debugging</li>
+        <li>Consistent performance across multiple programming contests</li>
       </ul>
-      <p class="mt-4">These results reflect consistent dedication to mastering complex mathematical and scientific concepts, strong analytical thinking, and the ability to perform under pressure.</p>
     `,
     },
     {
@@ -53,20 +55,18 @@ const achievements: Achievement[] = [
     },
     {
         id: "ach3",
-        title: "Codeforces Expert (1612)",
-        organization: "Codeforces",
+        title: "JEE Advanced & Mains 2024",
+        organization: "Joint Entrance Examination",
         date: "2024",
-        icon: "award",
-        description: "Expert rating demonstrating strong algorithmic problem-solving and competitive programming skills.",
+        icon: "trophy",
+        description: "Qualified for admissions to IITs with strong performance in both examinations",
         details: `
-      <p>Achieved Codeforces Expert rating (1612), demonstrating strong expertise in:</p>
+      <p>Achieved exceptional results in both JEE Advanced and JEE Mains examinations, demonstrating strong conceptual understanding and problem-solving abilities.</p>
       <ul class="list-disc pl-5 space-y-2 mt-4">
-        <li>Algorithmic problem-solving under time constraints</li>
-        <li>Advanced data structures and algorithms</li>
-        <li>Competitive programming strategies and optimization techniques</li>
-        <li>Efficient code implementation and debugging</li>
-        <li>Consistent performance across multiple programming contests</li>
+        <li><strong>JEE Advanced:</strong> Secured AIR 1235, showcasing deep conceptual mastery</li>
+        <li><strong>JEE Mains:</strong> Achieved top percentile performance among over 1 million candidates</li>
       </ul>
+      <p class="mt-4">These results reflect consistent dedication to mastering complex mathematical and scientific concepts, strong analytical thinking, and the ability to perform under pressure.</p>
     `,
     },
 ];

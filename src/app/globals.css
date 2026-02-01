@@ -35,22 +35,26 @@
 
 .dark {
   /* Dark Mode - Deep Space & Magic */
-  --background: #0a0a1f;
+  --background: #0f0c29;
+  /* Darkest purple */
   --foreground: #e0e0e0;
 
-  --card: #11112b;
+  --card: #151230;
+  /* Slightly lighter purple */
   --card-foreground: #e0e0e0;
 
-  --popover: #11112b;
+  --popover: #151230;
   --popover-foreground: #e0e0e0;
 
   --primary: #ffd700;
   --primary-foreground: #000000;
 
-  --secondary: #1e293b;
+  --secondary: #24243e;
+  /* Mid-tone purple */
   --secondary-foreground: #f8fafc;
 
-  --muted: #1e293b;
+  --muted: #302b63;
+  /* Lighter purple accent */
   --muted-foreground: #94a3b8;
 
   --accent: #9d4edd;
@@ -59,7 +63,7 @@
   --destructive: #7f1d1d;
   --destructive-foreground: #f8fafc;
 
-  --border: #1e293b;
+  --border: #302b63;
   --input: #1e293b;
   --ring: #ffd700;
 }
@@ -107,14 +111,15 @@
 
 body {
   background: var(--background);
-  /* Create a pseudo-element logic or use a gradient overlay for the tint if simpler */
-  background-image: linear-gradient(to bottom, var(--ambient-color, transparent), transparent 40%);
-  background-attachment: fixed;
-  /* Keep it static */
-
   color: var(--foreground);
   font-family: var(--font-sans);
   transition: background-color 0.5s ease, color 0.3s ease;
+}
+
+.dark body {
+  /* Midnight Gradient ONLY for Dark Mode */
+  background-image: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+  background-attachment: fixed;
 }
 
 ::view-transition-old(root),

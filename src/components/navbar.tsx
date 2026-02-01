@@ -67,10 +67,10 @@ export function Navbar() {
                         <Link href="https://linkedin.com/in/yugbargaway" target="_blank" className="p-2 hover:bg-secondary rounded-full transition-colors">
                             <Linkedin className="w-5 h-5" />
                         </Link>
-                        <Link href="https://codeforces.com/profile/yugbargaway" target="_blank" className="p-2 hover:bg-secondary rounded-full transition-colors" title="Codeforces">
+                        <Link href="https://codeforces.com/profile/Yug_Bargaway" target="_blank" className="p-2 hover:bg-secondary rounded-full transition-colors" title="Codeforces">
                             <Codeforces className="w-5 h-5" />
                         </Link>
-                        <Link href="https://instagram.com" target="_blank" className="p-2 hover:bg-secondary rounded-full transition-colors">
+                        <Link href="https://instagram.com/yugbargaway" target="_blank" className="p-2 hover:bg-secondary rounded-full transition-colors">
                             <Instagram className="w-5 h-5" />
                         </Link>
                         <ThemeToggle />

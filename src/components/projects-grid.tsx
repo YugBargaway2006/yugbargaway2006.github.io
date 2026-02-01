@@ -22,20 +22,22 @@ interface Project {
 const projects: Project[] = [
     {
         id: "proj1",
-        title: "High Performance Testing Prediction Project",
+        title: "High Performance Trading Engine",
         category: "Systems Programming",
-        description: "Built a low-latency C++17 transaction processing engine delivering 641ms critical-path latency.",
+        description: "Built a low-latency C++17 transaction processing engine delivering 641ns critical-path latency.",
+        repoUrl: "https://github.com/yugbargaway",
+        liveUrl: "https://github.com/yugbargaway",
         tags: ["C++17", "UDP/IP", "Zero-Allocation", "Low-Latency"],
         details: `
       <p>Designed and implemented a high-performance transaction processing system for critical financial operations.</p>
       <h3 class="text-xl font-bold mt-4 mb-2">Key Features</h3>
       <ul class="list-disc pl-5 space-y-2">
-        <li>Built a low-latency C++17 transaction processing engine delivering <strong>641ms critical-path latency</strong> and <strong>1.5M orders/sec</strong> on single-core hardware</li>
-        <li>Achieved <strong>3x performance gains</strong> through cache-friendly O(1) data structures, zero-allocation object pools, and a raw UDP/IP networking stack</li>
-        <li>Enabled development and testing within a 24-hour window with DFS and real-time updates on table convergence over long sequences</li>
+        <li>Built a low-latency C++17 transaction processing engine delivering <strong>641ns critical-path latency</strong> and <strong>1.5M orders/sec</strong> on single-core hardware</li>
+        <li>Achieved performance gains through cache-friendly O(1) data structures, zero-allocation object pools, and a raw UDP/IP networking stack</li>
+        <li>Enabled development and testing via CMake and Bash-driven CI/CD, supporting automated process, builds, tests and cleanup integration</li>
       </ul>
       <h3 class="text-xl font-bold mt-4 mb-2">Technical Stack</h3>
-      <p>C++17, UDP/IP Networking, Memory Management, Algorithmic Optimization</p>
+      <p>C++17, UDP/IP Networking, Memory Management, Algorithmic Optimization, CMake, Bash</p>
     `,
     },
     {
@@ -43,14 +45,16 @@ const projects: Project[] = [
         title: "Visual Speech Recognition Using Deep Learning",
         category: "Deep Learning",
         description: "LipNet end-to-end visual speech recognition using STCNN + Bi-RNN + CTC architecture.",
+        repoUrl: "https://github.com/yugbargaway",
+        liveUrl: "https://github.com/yugbargaway",
         tags: ["Python", "TensorFlow", "STCNN", "Bi-RNN", "CTC"],
         details: `
       <p>Implemented the LipNet end-to-end model for sentence-level lip reading through visual signal recognition.</p>
       <h3 class="text-xl font-bold mt-4 mb-2">Architecture & Results</h3>
       <ul class="list-disc pl-5 space-y-2">
-        <li>Implemented LipNet end-to-end visual signal recognition <strong>(STCNN + Bi-RNN + CTC)</strong> for sentence-level lip reading from mouth ROIs</li>
-        <li>Achieved <strong>85% sentence accuracy</strong> on 1,000 video samples (6 speakers), validating sequence prediction under limited data settings robustly</li>
-        <li>Built a GPU-aware PyTorch training and inference pipeline with efficient video preprocessing and table convergence over long sequences</li>
+        <li>Implemented the LipNet end-to-end visual speech recognition model <strong>(STCNN + Bi-RNN + CTC)</strong> for sentence-level lip reading from video data</li>
+        <li>Achieved <strong>88% sentence accuracy</strong> on 1,000 video samples (2 speakers), validating sequence prediction under limited data settings robustly</li>
+        <li>Built a GPU-aware PyTorch training and inference pipeline with efficient video preprocessing and stable convergence over long sequences</li>
       </ul>
       <h3 class="text-xl font-bold mt-4 mb-2">Technologies</h3>
       <p>Python, TensorFlow/PyTorch, Computer Vision, Sequence Modeling</p>

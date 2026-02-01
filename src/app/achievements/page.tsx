@@ -1,5 +1,6 @@
 import { SectionHeader } from "@/components/section-header";
 import { AchievementsList } from "@/components/achievements-list";
+import { HouseBanners } from "@/components/house-banners";
 
 export default function AchievementsPage() {
     return (
@@ -8,6 +9,7 @@ export default function AchievementsPage() {
                 title="Hall of Fame"
                 subtitle="Accolades and trophies collected along the way"
             />
+            <HouseBanners />
             <AchievementsList />
         </div>
     );

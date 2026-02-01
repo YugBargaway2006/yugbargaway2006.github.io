@@ -21,16 +21,16 @@ const experiences: Experience[] = [
         role: "Data Analytics & AI Intern",
         company: "ShipCube LLC (Remote)",
         duration: "Nov 2025 - Jan 2026",
-        description: "Developed AI stack for market trend analysis, building custom intelligence bot and TRL system architecture.",
+        description: "Developed full-stack support chatbot and custom intelligence bot generating 1000+ verified leads daily.",
         details: `
       <h3 class="text-xl font-bold mb-2">Key Achievements</h3>
       <ul class="list-disc pl-5 space-y-2">
-        <li>Developed AI stack for market trend analysis on multi-stage TAG and ML pipelines, <strong>boosting accuracy by 30%</strong> and cutting execution resolution time by 70%</li>
-        <li>Built a custom intelligence bot generating <strong>100+ verified leads daily</strong>, automating market research and cutting manual prospecting time by 95%</li>
-        <li>Orchestrated TRL-9 system architecture for vision-driven robotics, defining <strong>perception, friction estimation, and DRL-based pipelines</strong> design</li>
+        <li>Developed full-stack support chatbot using multi-stage RAG and ML pipelines, <strong>boosting accuracy by 30%</strong> and cutting resolution time by 70%</li>
+        <li>Built a custom intelligence bot generating <strong>1000+ verified leads daily</strong>, automating market research and cutting manual prospecting time by 95%</li>
+        <li>Orchestrated system architecture for WMS ingestion on GCP, defining high-level data flows, service boundaries, and cache-DB interactions</li>
       </ul>
       <h3 class="text-xl font-bold mt-4 mb-2">Technologies Used</h3>
-      <p>Python, AI/ML Pipelines, Data Analysis, Robotics Systems</p>
+      <p>Python, AI/ML Pipelines, RAG, GCP, Data Analysis</p>
     `,
     },
     {
@@ -38,13 +38,13 @@ const experiences: Experience[] = [
         role: "Undergraduate Research Assistant",
         company: "Under Assistant Prof. Priyam Chakraborty - IIT Kharagpur",
         duration: "Aug 2025 - Nov 2025",
-        description: "Research on constrained TRL for perception-action-feedback architecture.",
+        description: "Research on vision-driven robotics system architecture with DRL-based pipelines.",
         details: `
       <h3 class="text-xl font-bold mb-2">Research Contributions</h3>
       <ul class="list-disc pl-5 space-y-2">
-        <li>Orchestrated TRL-8 on constrained roadmap for perception-action-feedback and control-action on <strong>DRL-based pipelines design</strong></li>
+        <li>Orchestrated TRL-0 system architecture for vision-driven robotics, defining perception, friction estimation and <strong>DRL-based pipelines design</strong></li>
         <li>Designed feasibility targets via architecture: <strong>95%+ perception accuracy, ≤ 5% friction error, and ≤ 5 ms policy switching latency</strong> in simulation</li>
-        <li>Authored multi-level blueprint spanning perception, estimation, action, and control with an <strong>18-month roadmap</strong>, project assured due to funding limits</li>
+        <li>Authored architectural blueprint spanning perception, estimation, and control with an <strong>18-month roadmap</strong>, project paused due to funding limits</li>
       </ul>
       <h3 class="text-xl font-bold mt-4 mb-2">Skills Developed</h3>
       <p>Deep Reinforcement Learning, Computer Vision, Robotics Control Systems</p>

@@ -14,7 +14,7 @@ export function FloatingHogwartsLetter() {
     const controls = useAnimation();
 
     // Physics state
-    const position = useRef({ x: typeof window !== 'undefined' ? window.innerWidth / 2 - 75 : 300, y: typeof window !== 'undefined' ? window.innerHeight / 2 - 50 : 200 });
+    const position = useRef({ x: typeof window !== 'undefined' ? window.innerWidth / 2 - 75 : 300, y: 100 });
     const velocity = useRef({ x: 0, y: 0 });
     const [rotation, setRotation] = useState(0);
     const [skew, setSkew] = useState({ x: 0, y: 0 });
@@ -22,7 +22,7 @@ export function FloatingHogwartsLetter() {
     const [isCurious, setIsCurious] = useState(false);
     const lastCuriosityTime = useRef(0);
     const isAnimating = useRef(false);
-    const explorationTarget = useRef({ x: 400, y: 300 });
+    const explorationTarget = useRef({ x: 400, y: 200 });
     const explorationCooldown = useRef(0);
 
     // Track mouse position
@@ -76,33 +76,55 @@ export function FloatingHogwartsLetter() {
             const dy = mousePos.y - position.current.y - letterSize / 2;
             const distToMouse = Math.sqrt(dx * dx + dy * dy);
 
-            // === EXPLORATION BEHAVIOR - Travel to different page areas ===
+            // === EXPLORATION BEHAVIOR - VERY STRONG, NO GRAVITY ===
             explorationCooldown.current -= 1;
 
             if (explorationCooldown.current <= 0) {
-                // Target ALL areas - 9 diverse locations
+                // Create exploration targets WEIGHTED TOWARD NAVBAR BUTTONS & UPPER AREAS
                 const targets = [
-                    { x: width * 0.15, y: height * 0.2 },
-                    { x: width * 0.5, y: height * 0.15 },
-                    { x: width * 0.85, y: height * 0.25 },
-                    { x: width * 0.2, y: height * 0.5 },
-                    { x: width * 0.5, y: height * 0.4 },
-                    { x: width * 0.8, y: height * 0.5 },
-                    { x: width * 0.25, y: height * 0.75 },
-                    { x: width * 0.5, y: height * 0.7 },
-                    { x: width * 0.75, y: height * 0.65 },
+                    // Navbar buttons - precise locations (y: 0.04-0.11) - 8 targets
+                    { x: width * 0.15, y: height * 0.06 }, // Logo area
+                    { x: width * 0.33, y: height * 0.08 }, // About
+                    { x: width * 0.42, y: height * 0.08 }, // Experience
+                    { x: width * 0.52, y: height * 0.08 }, // Projects
+                    { x: width * 0.63, y: height * 0.08 }, // Achievements
+                    { x: width * 0.73, y: height * 0.08 }, // Contact
+                    { x: width * 0.85, y: height * 0.06 }, // Social icons
+                    { x: width * 0.92, y: height * 0.08 }, // Theme toggle
+                    // Upper area (y: 0.15-0.35) - 8 targets
+                    { x: width * 0.15, y: height * 0.15 },
+                    { x: width * 0.5, y: height * 0.18 },
+                    { x: width * 0.85, y: height * 0.22 },
+                    { x: width * 0.3, y: height * 0.25 },
+                    { x: width * 0.7, y: height * 0.28 },
+                    { x: width * 0.25, y: height * 0.32 },
+                    { x: width * 0.55, y: height * 0.2 },
+                    { x: width * 0.75, y: height * 0.3 },
+                    // Middle (y: 0.35-0.55) - 4 targets
+                    { x: width * 0.2, y: height * 0.38 },
+                    { x: width * 0.5, y: height * 0.42 },
+                    { x: width * 0.8, y: height * 0.48 },
+                    { x: width * 0.35, y: height * 0.52 },
+                    // Lower (y: 0.55-0.7) - 2 targets only
+                    { x: width * 0.4, y: height * 0.6 },
+                    { x: width * 0.65, y: height * 0.65 },
+                    // Sides - upper/middle heights only
+                    { x: width * 0.08, y: height * 0.2 },
+                    { x: width * 0.92, y: height * 0.25 },
+                    { x: width * 0.1, y: height * 0.4 },
+                    { x: width * 0.9, y: height * 0.35 },
                 ];
                 explorationTarget.current = targets[Math.floor(Math.random() * targets.length)];
-                explorationCooldown.current = 100 + Math.random() * 50; // 1.5-2.5s faster
+                explorationCooldown.current = 70 + Math.random() * 30; // 1.1-1.6s
             }
 
-            // Move toward exploration target
+            // Move toward exploration target - DOMINANT FORCE
             const toTargetX = explorationTarget.current.x - position.current.x;
             const toTargetY = explorationTarget.current.y - position.current.y;
             const distToTarget = Math.sqrt(toTargetX * toTargetX + toTargetY * toTargetY);
 
             if (distToTarget > 50) {
-                const exploreForce = 0.15; // MASSIVELY INCREASED from 0.02!
+                const exploreForce = 0.35; // VERY DOMINANT
                 velocity.current.x += (toTargetX / distToTarget) * exploreForce;
                 velocity.current.y += (toTargetY / distToTarget) * exploreForce;
             }
@@ -116,64 +138,67 @@ export function FloatingHogwartsLetter() {
             }
 
             // === MOUSE INTERACTIONS ===
-            const repelRadius = 220;
-            const attractRadius = 450;
-            const curiousRadius = 700;
+            const repelRadius = 180;
+            const attractRadius = 400;
+            const curiousRadius = 600;
 
             if (!isHovered) {
                 if (isCurious) {
                     // When curious, actively approach the cursor
                     if (distToMouse > 120 && distToMouse < curiousRadius) {
-                        const force = 0.05;
+                        const force = 0.08;
                         velocity.current.x += (dx / distToMouse) * force;
                         velocity.current.y += (dy / distToMouse) * force;
                     }
                 } else {
-                    // Normal behavior: weaker repulsion
+                    // Normal behavior: repulsion when close
                     if (distToMouse < repelRadius && distToMouse > 0) {
                         const force = (repelRadius - distToMouse) / repelRadius;
-                        velocity.current.x -= (dx / distToMouse) * force * 0.8; // Reduced from 1.8
-                        velocity.current.y -= (dy / distToMouse) * force * 0.8;
+                        velocity.current.x -= (dx / distToMouse) * force * 1.2;
+                        velocity.current.y -= (dy / distToMouse) * force * 1.2;
                     }
                     // Gentle attraction when at medium distance
                     else if (distToMouse > repelRadius && distToMouse < attractRadius) {
-                        const force = 0.015;
+                        const force = 0.02;
                         velocity.current.x += (dx / distToMouse) * force;
                         velocity.current.y += (dy / distToMouse) * force;
                     }
                 }
             }
 
-            // === ACTIVE DRIFT - Much weaker ===
-            const driftX = Math.sin(time * 0.9) * 0.3 + Math.cos(time * 1.3) * 0.2; // Halved
-            const driftY = Math.cos(time * 1.1) * 0.25 + Math.sin(time * 0.7) * 0.15; // Halved
+            // === MINIMAL DRIFT - truly neutral ===
+            const driftX = Math.sin(time * 0.8) * 0.08;
+            const driftY = Math.sin(time * 1.1 + Math.PI / 2) * 0.08; // Same pattern as X, just phase-shifted
             velocity.current.x += driftX;
             velocity.current.y += driftY;
 
-            // === TYPING ATTRACTION ===
+            // === GENTLE UPWARD BIAS to counteract subtle downward tendency ===
+            velocity.current.y -= 0.03; // Gentle constant upward force
+
+            // === CONTENT AREA ATTRACTION ===
             if (isTyping) {
                 const formCenterX = width * 0.65;
-                const formCenterY = height * 0.5;
+                const formCenterY = height * 0.35; // Moved up from 0.45
                 const toFormX = formCenterX - position.current.x;
                 const toFormY = formCenterY - position.current.y;
-                velocity.current.x += toFormX * 0.004;
-                velocity.current.y += toFormY * 0.004;
+                velocity.current.x += toFormX * 0.01;
+                velocity.current.y += toFormY * 0.01;
             }
 
             // === RANDOM LIVELINESS ===
-            if (Math.random() < 0.04) {
-                velocity.current.x += (Math.random() - 0.5) * 4;
-                velocity.current.y += (Math.random() - 0.5) * 4;
-                autonomousRotation += (Math.random() - 0.5) * 25;
+            if (Math.random() < 0.03) {
+                velocity.current.x += (Math.random() - 0.5) * 3;
+                velocity.current.y += (Math.random() - 0.5) * 3;
+                autonomousRotation += (Math.random() - 0.5) * 20;
             }
 
             // === DAMPING ===
-            velocity.current.x *= 0.90;
-            velocity.current.y *= 0.90;
+            velocity.current.x *= 0.93;
+            velocity.current.y *= 0.93;
 
             // === SPEED LIMIT ===
             const speed = Math.sqrt(velocity.current.x ** 2 + velocity.current.y ** 2);
-            const maxSpeed = 6;
+            const maxSpeed = 8;
             if (speed > maxSpeed) {
                 velocity.current.x = (velocity.current.x / speed) * maxSpeed;
                 velocity.current.y = (velocity.current.y / speed) * maxSpeed;
@@ -190,34 +215,34 @@ export function FloatingHogwartsLetter() {
             position.current.x += velocity.current.x;
             position.current.y += velocity.current.y;
 
-            // === BOUNDARIES - Soft forces from edges ===
-            const padding = 80;
+            // === BOUNDARIES - STRONG edge forces ===
+            const padding = 60;
 
-            // Gentle repelling force from edges instead of hard bounce
+            // Very strong repelling force from edges
             if (position.current.x < padding) {
-                const edgeForce = (padding - position.current.x) * 0.08;
+                const edgeForce = (padding - position.current.x) * 0.15;
                 velocity.current.x += edgeForce;
             }
             if (position.current.x > width - letterSize - padding) {
-                const edgeForce = (width - letterSize - padding - position.current.x) * 0.08;
+                const edgeForce = (width - letterSize - padding - position.current.x) * 0.15;
                 velocity.current.x += edgeForce;
             }
             if (position.current.y < padding) {
-                const edgeForce = (padding - position.current.y) * 0.08;
+                const edgeForce = (padding - position.current.y) * 0.15;
                 velocity.current.y += edgeForce;
             }
             if (position.current.y > height - letterSize - padding) {
-                const edgeForce = (height - letterSize - padding - position.current.y) * 0.08;
+                const edgeForce = (height - letterSize - padding - position.current.y) * 0.15;
                 velocity.current.y += edgeForce;
             }
 
             // Hard limits
-            position.current.x = Math.max(50, Math.min(width - letterSize - 50, position.current.x));
-            position.current.y = Math.max(50, Math.min(height - letterSize - 50, position.current.y));
+            position.current.x = Math.max(40, Math.min(width - letterSize - 40, position.current.x));
+            position.current.y = Math.max(40, Math.min(height - letterSize - 40, position.current.y));
 
             // === ROTATION ===
             autonomousRotation += Math.sin(time * 0.8) * 0.5;
-            autonomousRotation *= 0.90;
+            autonomousRotation *= 0.92;
 
             const velocityRotation = Math.atan2(velocity.current.y, velocity.current.x) * (180 / Math.PI);
             const targetRotation = velocityRotation * 0.3 + autonomousRotation;
@@ -241,12 +266,13 @@ export function FloatingHogwartsLetter() {
             setHasBeenClicked(true);
             isAnimating.current = true;
             await controls.start({
-                rotate: [rotation, rotation + 720],
+                rotate: [rotation, rotation + 360], // First click: 360 degree rotation
                 scale: [1, 1.2, 1],
                 transition: { duration: 1, ease: "easeOut" },
             });
             isAnimating.current = false;
         } else {
+            // Second click: show wizard message
             setShowMessage(true);
             setTimeout(() => setShowMessage(false), 3000);
         }
@@ -256,104 +282,88 @@ export function FloatingHogwartsLetter() {
         isAnimating.current = true;
         await controls.start({
             rotateY: [0, 360],
+            rotateX: [0, 360],
             scale: [1, 1.3, 1],
-            transition: { duration: 0.8, ease: "easeInOut" },
+            transition: { duration: 1.2, ease: "easeInOut" },
         });
         isAnimating.current = false;
     };
 
     return (
         <>
-            <div
+            <motion.div
                 ref={letterRef}
-                className="fixed pointer-events-auto cursor-pointer z-40"
+                className="fixed pointer-events-auto cursor-pointer z-30"
                 style={{
                     width: "150px",
-                    height: "105px",
+                    height: "100px",
                     willChange: "transform",
                 }}
-                onClick={handleClick}
-                onDoubleClick={handleDoubleClick}
+                animate={controls}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
+                onClick={handleClick}
+                onDoubleClick={handleDoubleClick}
             >
-                {/* The letter */}
                 <motion.div
-                    className="relative w-full h-full"
-                    animate={controls}
                     style={{
-                        transform: `scale(${breathingScale}) skewX(${skew.x}deg) skewY(${skew.y}deg)`,
+                        scale: breathingScale,
+                        skew: `${skew.x}deg ${skew.y}deg`,
                     }}
+                    className="relative w-full h-full"
                 >
                     <Image
-                        src={`/hogwarts-letter.png?v=${Date.now()}`}
+                        src="/hogwarts-letter.png"
                         alt="Hogwarts Letter"
                         fill
-                        className="object-contain drop-shadow-xl"
-                        draggable={false}
+                        className="object-contain drop-shadow-2xl"
+                        style={{
+                            filter: isHovered ? "drop-shadow(0 0 20px rgba(255, 0, 0, 0.6))" : "drop-shadow(0 10px 25px rgba(0,0,0,0.3))",
+                            transition: "filter 0.3s ease",
+                            imageRendering: "crisp-edges",
+                        }}
+                        priority
                         unoptimized
                     />
 
-                    {/* Wax seal glow */}
-                    {isHovered && (
-                        <motion.div
-                            className="absolute top-1/2 left-1/2 w-8 h-8 bg-red-500/30 rounded-full blur-md"
-                            style={{ transform: "translate(-50%, -50%)" }}
-                            animate={{
-                                scale: [1, 1.3, 1],
-                                opacity: [0.3, 0.7, 0.3],
-                            }}
-                            transition={{
-                                duration: 1.5,
-                                repeat: Infinity,
-                            }}
-                        />
-                    )}
-
-                    {/* Magic sparkles */}
+                    {/* Sparkles on hover */}
                     {isHovered && (
                         <>
-                            {[...Array(4)].map((_, i) => (
+                            {[...Array(8)].map((_, i) => (
                                 <motion.div
                                     key={i}
-                                    className="absolute w-1 h-1 bg-yellow-300 rounded-full"
+                                    className="absolute w-1 h-1 bg-yellow-400 rounded-full"
                                     style={{
-                                        left: `${20 + i * 25}%`,
-                                        top: `${30 + i * 15}%`,
+                                        left: `${Math.random() * 100}%`,
+                                        top: `${Math.random() * 100}%`,
                                     }}
                                     animate={{
-                                        y: [-10, -40],
-                                        x: [(Math.random() - 0.5) * 15, (Math.random() - 0.5) * 25],
-                                        opacity: [1, 0],
+                                        y: [-20, -60],
+                                        opacity: [0, 1, 0],
                                         scale: [0, 1.5, 0],
                                     }}
                                     transition={{
-                                        duration: 1.2,
+                                        duration: 1.5,
                                         repeat: Infinity,
-                                        delay: i * 0.25,
+                                        delay: i * 0.15,
                                     }}
                                 />
                             ))}
                         </>
                     )}
                 </motion.div>
-            </div>
+            </motion.div>
 
-            {/* Easter egg message */}
+            {/* Message popup */}
             {showMessage && (
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.5, y: 50 }}
+                    initial={{ opacity: 0, scale: 0.8, y: -20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
                     className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none"
                 >
-                    <div className="bg-card/95 backdrop-blur-md border-2 border-primary p-8 rounded-lg shadow-2xl">
-                        <p className="text-2xl font-serif text-center mb-2">
-                            ✨ You&apos;re a wizard! ✨
-                        </p>
-                        <p className="text-muted-foreground text-center text-sm">
-                            Your message will be delivered by owl post 🦉
-                        </p>
+                    <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-2xl shadow-2xl border-2 border-yellow-400 text-2xl font-bold">
+                        ✨ You're a wizard! ✨
                     </div>
                 </motion.div>
             )}
