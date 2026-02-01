@@ -10,7 +10,7 @@ import { Github, Linkedin, Mail } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { FlooNetworkPortal } from "@/components/effects/patronus-deer";
-import { FloatingHogwartsLetter } from "@/components/effects/floating-hogwarts-letter";
+
 
 export default function ContactPage() {
     const [name, setName] = useState("");
@@ -77,8 +77,7 @@ export default function ContactPage() {
                 subtitle="Send a message via the magical network"
             />
 
-            {/* Floating Hogwarts Letter */}
-            <FloatingHogwartsLetter />
+
 
             <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
                 <motion.div

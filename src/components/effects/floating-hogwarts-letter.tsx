@@ -3,313 +3,242 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 export function FloatingHogwartsLetter() {
-    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+    const pathname = usePathname();
     const [isHovered, setIsHovered] = useState(false);
     const [hasBeenClicked, setHasBeenClicked] = useState(false);
     const [showMessage, setShowMessage] = useState(false);
-    const [isTyping, setIsTyping] = useState(false);
+
     const letterRef = useRef<HTMLDivElement>(null);
     const controls = useAnimation();
 
-    // Physics state
-    const position = useRef({ x: typeof window !== 'undefined' ? window.innerWidth / 2 - 75 : 300, y: 100 });
-    const velocity = useRef({ x: 0, y: 0 });
-    const [rotation, setRotation] = useState(0);
-    const [skew, setSkew] = useState({ x: 0, y: 0 });
+    // Physics State - MUTABLE REFS for performance (no re-renders)
+    const state = useRef({
+        pos: { x: typeof window !== 'undefined' ? window.innerWidth / 2 : 300, y: 100 },
+        vel: { x: 0, y: 0 },
+        acc: { x: 0, y: 0 },
+        target: { x: 0, y: 0 },
+        mode: "EXPLORE" as "EXPLORE" | "HOVER_POI" | "IDLE",
+        timer: 0,
+        rotation: 0,
+        breathingTime: 0
+    });
+
     const [breathingScale, setBreathingScale] = useState(1);
-    const [isCurious, setIsCurious] = useState(false);
-    const lastCuriosityTime = useRef(0);
-    const isAnimating = useRef(false);
-    const explorationTarget = useRef({ x: 400, y: 200 });
-    const explorationCooldown = useRef(0);
+    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+    const prevHoveredElement = useRef<Element | null>(null);
 
-    // Track mouse position
+    // Track Mouse
     useEffect(() => {
-        const handleMouseMove = (e: MouseEvent) => {
-            setMousePos({ x: e.clientX, y: e.clientY });
-        };
-
-        const handleKeyDown = () => {
-            setIsTyping(true);
-            setTimeout(() => setIsTyping(false), 3000);
-        };
-
+        const handleMouseMove = (e: MouseEvent) => setMousePos({ x: e.clientX, y: e.clientY });
         window.addEventListener("mousemove", handleMouseMove);
-        window.addEventListener("keydown", handleKeyDown);
-
-        return () => {
-            window.removeEventListener("mousemove", handleMouseMove);
-            window.removeEventListener("keydown", handleKeyDown);
-        };
+        return () => window.removeEventListener("mousemove", handleMouseMove);
     }, []);
 
-    // Breathing animation
+    // Main Physics Loop
     useEffect(() => {
-        let time = 0;
-        const breathe = () => {
-            time += 0.016;
-            const scale = 1 + Math.sin(time * 1.5) * 0.02;
-            setBreathingScale(scale);
-            requestAnimationFrame(breathe);
-        };
-        const breatheId = requestAnimationFrame(breathe);
-        return () => cancelAnimationFrame(breatheId);
-    }, []);
+        if (pathname !== "/contact") return;
 
-    // Physics-based floating animation
-    useEffect(() => {
         let animationId: number;
-        let time = 0;
-        let autonomousRotation = 0;
+        const letterSize = 150;
+        const padding = 10; // Minimal padding to allow touching edges
 
-        const animate = () => {
-            time += 0.016;
-
+        const updatePhysics = () => {
             const width = window.innerWidth;
             const height = window.innerHeight;
-            const letterSize = 150;
+            const s = state.current;
 
-            // Calculate distance to mouse
-            const dx = mousePos.x - position.current.x - letterSize / 2;
-            const dy = mousePos.y - position.current.y - letterSize / 2;
-            const distToMouse = Math.sqrt(dx * dx + dy * dy);
+            // 1. STATE MANAGEMENT & TARGET SELECTION
+            s.timer--;
+            if (s.timer <= 0) {
+                // Pick new behavior
+                const rand = Math.random();
 
-            // === EXPLORATION BEHAVIOR - VERY STRONG, NO GRAVITY ===
-            explorationCooldown.current -= 1;
-
-            if (explorationCooldown.current <= 0) {
-                // Create exploration targets WEIGHTED TOWARD NAVBAR BUTTONS & UPPER AREAS
-                const targets = [
-                    // Navbar buttons - precise locations (y: 0.04-0.11) - 8 targets
-                    { x: width * 0.15, y: height * 0.06 }, // Logo area
-                    { x: width * 0.33, y: height * 0.08 }, // About
-                    { x: width * 0.42, y: height * 0.08 }, // Experience
-                    { x: width * 0.52, y: height * 0.08 }, // Projects
-                    { x: width * 0.63, y: height * 0.08 }, // Achievements
-                    { x: width * 0.73, y: height * 0.08 }, // Contact
-                    { x: width * 0.85, y: height * 0.06 }, // Social icons
-                    { x: width * 0.92, y: height * 0.08 }, // Theme toggle
-                    // Upper area (y: 0.15-0.35) - 8 targets
-                    { x: width * 0.15, y: height * 0.15 },
-                    { x: width * 0.5, y: height * 0.18 },
-                    { x: width * 0.85, y: height * 0.22 },
-                    { x: width * 0.3, y: height * 0.25 },
-                    { x: width * 0.7, y: height * 0.28 },
-                    { x: width * 0.25, y: height * 0.32 },
-                    { x: width * 0.55, y: height * 0.2 },
-                    { x: width * 0.75, y: height * 0.3 },
-                    // Middle (y: 0.35-0.55) - 4 targets
-                    { x: width * 0.2, y: height * 0.38 },
-                    { x: width * 0.5, y: height * 0.42 },
-                    { x: width * 0.8, y: height * 0.48 },
-                    { x: width * 0.35, y: height * 0.52 },
-                    // Lower (y: 0.55-0.7) - 2 targets only
-                    { x: width * 0.4, y: height * 0.6 },
-                    { x: width * 0.65, y: height * 0.65 },
-                    // Sides - upper/middle heights only
-                    { x: width * 0.08, y: height * 0.2 },
-                    { x: width * 0.92, y: height * 0.25 },
-                    { x: width * 0.1, y: height * 0.4 },
-                    { x: width * 0.9, y: height * 0.35 },
-                ];
-                explorationTarget.current = targets[Math.floor(Math.random() * targets.length)];
-                explorationCooldown.current = 70 + Math.random() * 30; // 1.1-1.6s
-            }
-
-            // Move toward exploration target - DOMINANT FORCE
-            const toTargetX = explorationTarget.current.x - position.current.x;
-            const toTargetY = explorationTarget.current.y - position.current.y;
-            const distToTarget = Math.sqrt(toTargetX * toTargetX + toTargetY * toTargetY);
-
-            if (distToTarget > 50) {
-                const exploreForce = 0.35; // VERY DOMINANT
-                velocity.current.x += (toTargetX / distToTarget) * exploreForce;
-                velocity.current.y += (toTargetY / distToTarget) * exploreForce;
-            }
-
-            // === CURIOSITY BEHAVIOR ===
-            const timeSinceLastCuriosity = time - lastCuriosityTime.current;
-            if (!isCurious && timeSinceLastCuriosity > 8 && Math.random() < 0.003) {
-                setIsCurious(true);
-                lastCuriosityTime.current = time;
-                setTimeout(() => setIsCurious(false), 4000);
-            }
-
-            // === MOUSE INTERACTIONS ===
-            const repelRadius = 180;
-            const attractRadius = 400;
-            const curiousRadius = 600;
-
-            if (!isHovered) {
-                if (isCurious) {
-                    // When curious, actively approach the cursor
-                    if (distToMouse > 120 && distToMouse < curiousRadius) {
-                        const force = 0.08;
-                        velocity.current.x += (dx / distToMouse) * force;
-                        velocity.current.y += (dy / distToMouse) * force;
-                    }
+                if (rand < 0.35) {
+                    // TARGET NAVBAR (35% Chance)
+                    s.mode = "EXPLORE";
+                    s.target = {
+                        x: Math.random() * (width - letterSize),
+                        // Allow it to go really high up, even slightly offscreen to 'peek'
+                        y: -30 + Math.random() * 90 // Range: -30px to 60px
+                    };
+                    s.timer = 150 + Math.random() * 100;
+                } else if (rand < 0.75) {
+                    // RANDOM LOWER SCREEN (40% Chance) - FORCE DOWN
+                    s.mode = "EXPLORE";
+                    s.target = {
+                        x: Math.random() * (width - letterSize),
+                        // FORCE 50-95% HEIGHT
+                        y: height * 0.5 + Math.random() * (height * 0.45 - letterSize)
+                    };
+                    s.timer = 180 + Math.random() * 120;
                 } else {
-                    // Normal behavior: repulsion when close
-                    if (distToMouse < repelRadius && distToMouse > 0) {
-                        const force = (repelRadius - distToMouse) / repelRadius;
-                        velocity.current.x -= (dx / distToMouse) * force * 1.2;
-                        velocity.current.y -= (dy / distToMouse) * force * 1.2;
+                    // FULL RANDOM (Idle/Hover combined) (25%)
+                    s.mode = "EXPLORE";
+                    s.target = {
+                        x: Math.random() * (width - letterSize),
+                        y: Math.random() * (height - letterSize)
+                    };
+                    s.timer = 200 + Math.random() * 200;
+                }
+            }
+
+            // 2. FORCE CALCULATION
+            // Reset acceleration
+            s.acc = { x: 0, y: 0 };
+
+            // Steering Force towards Target
+            if (s.mode === "EXPLORE") {
+                const dx = s.target.x - s.pos.x;
+                const dy = s.target.y - s.pos.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist > 30) { // Larger arrival radius for smoother stop
+                    // Normalize and scale (Seek behavior)
+                    const speed = 0.25; // Good realistic force
+                    s.acc.x += (dx / dist) * speed;
+                    s.acc.y += (dy / dist) * speed;
+                }
+            } else if (s.mode === "IDLE") {
+                // GENTLE HOVER IN PLACE
+                // Counteract velocity to stop
+                s.acc.x -= s.vel.x * 0.1;
+                s.acc.y -= s.vel.y * 0.1;
+            }
+
+            // Mouse Repulsion (unless clicked/active)
+            const mDx = mousePos.x - s.pos.x - letterSize / 2;
+            const mDy = mousePos.y - s.pos.y - letterSize / 2;
+            const mDist = Math.sqrt(mDx * mDx + mDy * mDy);
+
+            if (!isHovered && mDist < 200 && mDist > 0) {
+                const repelStrength = 0.6;
+                s.acc.x -= (mDx / mDist) * repelStrength;
+                s.acc.y -= (mDy / mDist) * repelStrength;
+            }
+
+            // Noise / Wander (Wind effect) - Smoother wind
+            s.acc.x += (Math.random() - 0.5) * 0.08;
+            s.acc.y += (Math.random() - 0.5) * 0.08;
+
+            // 3. INTEGRATION (Euler)
+            s.vel.x += s.acc.x;
+            s.vel.y += s.acc.y;
+
+            // Damping (Friction) - slightly less damping for drift
+            s.vel.x *= 0.96;
+            s.vel.y *= 0.96;
+
+            // Speed Limit
+            const maxSpeed = 10; // Realistic fast drift
+            const speedMag = Math.sqrt(s.vel.x ** 2 + s.vel.y ** 2);
+            if (speedMag > maxSpeed) {
+                s.vel.x = (s.vel.x / speedMag) * maxSpeed;
+                s.vel.y = (s.vel.y / speedMag) * maxSpeed;
+            }
+
+            // Update Position
+            s.pos.x += s.vel.x;
+            s.pos.y += s.vel.y;
+
+            // 4. BOUNDARY CHECKS (Bounce/Slide)
+            // Allow going slightly negative on Y to hit usage
+            if (s.pos.x < padding) { s.pos.x = padding; s.vel.x *= -0.5; }
+            if (s.pos.x > width - letterSize - padding) { s.pos.x = width - letterSize - padding; s.vel.x *= -0.5; }
+            if (s.pos.y < -30) { s.pos.y = -30; s.vel.y *= -0.5; } // Allow peeking top
+            if (s.pos.y > height - letterSize - padding) { s.pos.y = height - letterSize - padding; s.vel.y *= -0.5; }
+
+            // 5. SECONDARY ANIMATIONS (Rotation, Scale)
+            // Bank turn: Rotate based on X velocity
+            const targetRot = s.vel.x * 2.5;
+            s.rotation += (targetRot - s.rotation) * 0.1;
+
+            // Breathing
+            s.breathingTime += 0.03;
+            const breathe = 1 + Math.sin(s.breathingTime) * 0.03;
+            setBreathingScale(breathe);
+
+            // 6. GHOST INTERACTION (Trigger underlying elements)
+            if (letterRef.current) {
+                // Move DOM
+                letterRef.current.style.transform = `translate(${s.pos.x}px, ${s.pos.y}px) rotate(${s.rotation}deg)`;
+
+                // Interaction Check
+                const cx = s.pos.x + letterSize / 2;
+                const cy = s.pos.y + letterSize / 2;
+
+                // Briefly ignore pointer events to peek
+                letterRef.current.style.pointerEvents = 'none';
+                const elBelow = document.elementFromPoint(cx, cy);
+                letterRef.current.style.pointerEvents = 'auto';
+
+                if (elBelow && elBelow !== prevHoveredElement.current) {
+                    // Leave prev
+                    if (prevHoveredElement.current) {
+                        try {
+                            const eventOpts = { bubbles: true, cancelable: true, view: window };
+                            prevHoveredElement.current.dispatchEvent(new MouseEvent('mouseleave', eventOpts));
+                            prevHoveredElement.current.dispatchEvent(new MouseEvent('mouseout', eventOpts));
+                            prevHoveredElement.current.dispatchEvent(new PointerEvent('pointerout', eventOpts));
+                            prevHoveredElement.current.dispatchEvent(new PointerEvent('pointerleave', eventOpts));
+                            if (prevHoveredElement.current instanceof HTMLElement) prevHoveredElement.current.blur();
+                        } catch (e) { }
                     }
-                    // Gentle attraction when at medium distance
-                    else if (distToMouse > repelRadius && distToMouse < attractRadius) {
-                        const force = 0.02;
-                        velocity.current.x += (dx / distToMouse) * force;
-                        velocity.current.y += (dy / distToMouse) * force;
+                    // Enter new
+                    const interactive = elBelow.closest('a, button, [role="button"]');
+                    if (interactive) {
+                        const eventOpts = { bubbles: true, cancelable: true, view: window };
+                        interactive.dispatchEvent(new MouseEvent('mouseenter', eventOpts));
+                        interactive.dispatchEvent(new MouseEvent('mouseover', eventOpts));
+                        interactive.dispatchEvent(new PointerEvent('pointerover', eventOpts));
+                        interactive.dispatchEvent(new PointerEvent('pointerenter', eventOpts));
+                        // Try focusing to force styles (use careful focus that doesnt scroll)
+                        if (interactive instanceof HTMLElement) interactive.focus({ preventScroll: true });
+                        prevHoveredElement.current = interactive;
+                    } else {
+                        prevHoveredElement.current = null;
                     }
                 }
             }
 
-            // === MINIMAL DRIFT - truly neutral ===
-            const driftX = Math.sin(time * 0.8) * 0.08;
-            const driftY = Math.sin(time * 1.1 + Math.PI / 2) * 0.08; // Same pattern as X, just phase-shifted
-            velocity.current.x += driftX;
-            velocity.current.y += driftY;
-
-            // === GENTLE UPWARD BIAS to counteract subtle downward tendency ===
-            velocity.current.y -= 0.03; // Gentle constant upward force
-
-            // === CONTENT AREA ATTRACTION ===
-            if (isTyping) {
-                const formCenterX = width * 0.65;
-                const formCenterY = height * 0.35; // Moved up from 0.45
-                const toFormX = formCenterX - position.current.x;
-                const toFormY = formCenterY - position.current.y;
-                velocity.current.x += toFormX * 0.01;
-                velocity.current.y += toFormY * 0.01;
-            }
-
-            // === RANDOM LIVELINESS ===
-            if (Math.random() < 0.03) {
-                velocity.current.x += (Math.random() - 0.5) * 3;
-                velocity.current.y += (Math.random() - 0.5) * 3;
-                autonomousRotation += (Math.random() - 0.5) * 20;
-            }
-
-            // === DAMPING ===
-            velocity.current.x *= 0.93;
-            velocity.current.y *= 0.93;
-
-            // === SPEED LIMIT ===
-            const speed = Math.sqrt(velocity.current.x ** 2 + velocity.current.y ** 2);
-            const maxSpeed = 8;
-            if (speed > maxSpeed) {
-                velocity.current.x = (velocity.current.x / speed) * maxSpeed;
-                velocity.current.y = (velocity.current.y / speed) * maxSpeed;
-            }
-
-            // === FOLDING EFFECT ===
-            const velocityMagnitude = Math.sqrt(velocity.current.x ** 2 + velocity.current.y ** 2);
-            const skewIntensity = Math.min(velocityMagnitude * 2.5, 12);
-            const skewX = (velocity.current.y / (velocityMagnitude + 0.1)) * skewIntensity;
-            const skewY = (velocity.current.x / (velocityMagnitude + 0.1)) * skewIntensity;
-            setSkew({ x: skewX, y: skewY });
-
-            // === UPDATE POSITION ===
-            position.current.x += velocity.current.x;
-            position.current.y += velocity.current.y;
-
-            // === BOUNDARIES - STRONG edge forces ===
-            const padding = 60;
-
-            // Very strong repelling force from edges
-            if (position.current.x < padding) {
-                const edgeForce = (padding - position.current.x) * 0.15;
-                velocity.current.x += edgeForce;
-            }
-            if (position.current.x > width - letterSize - padding) {
-                const edgeForce = (width - letterSize - padding - position.current.x) * 0.15;
-                velocity.current.x += edgeForce;
-            }
-            if (position.current.y < padding) {
-                const edgeForce = (padding - position.current.y) * 0.15;
-                velocity.current.y += edgeForce;
-            }
-            if (position.current.y > height - letterSize - padding) {
-                const edgeForce = (height - letterSize - padding - position.current.y) * 0.15;
-                velocity.current.y += edgeForce;
-            }
-
-            // Hard limits
-            position.current.x = Math.max(40, Math.min(width - letterSize - 40, position.current.x));
-            position.current.y = Math.max(40, Math.min(height - letterSize - 40, position.current.y));
-
-            // === ROTATION ===
-            autonomousRotation += Math.sin(time * 0.8) * 0.5;
-            autonomousRotation *= 0.92;
-
-            const velocityRotation = Math.atan2(velocity.current.y, velocity.current.x) * (180 / Math.PI);
-            const targetRotation = velocityRotation * 0.3 + autonomousRotation;
-            setRotation((prev) => prev + (targetRotation - prev) * 0.1);
-
-            // === UPDATE DOM ===
-            if (letterRef.current) {
-                letterRef.current.style.transform = `translate(${position.current.x}px, ${position.current.y}px) rotate(${rotation}deg)`;
-            }
-            animationId = requestAnimationFrame(animate);
+            animationId = requestAnimationFrame(updatePhysics);
         };
 
-        animationId = requestAnimationFrame(animate);
-
+        animationId = requestAnimationFrame(updatePhysics);
         return () => cancelAnimationFrame(animationId);
-    }, [mousePos, isHovered, isTyping, rotation, isCurious]);
+    }, [mousePos, isHovered, pathname]);
 
-    // Click handlers
     const handleClick = async () => {
         if (!hasBeenClicked) {
             setHasBeenClicked(true);
-            isAnimating.current = true;
             await controls.start({
-                rotate: [rotation, rotation + 360], // First click: 360 degree rotation
-                scale: [1, 1.2, 1],
-                transition: { duration: 1, ease: "easeOut" },
+                rotate: [0, 360],
+                scale: [1, 1.3, 1],
+                transition: { duration: 0.8, ease: "backOut" },
             });
-            isAnimating.current = false;
         } else {
-            // Second click: show wizard message
             setShowMessage(true);
             setTimeout(() => setShowMessage(false), 3000);
         }
     };
 
-    const handleDoubleClick = async () => {
-        isAnimating.current = true;
-        await controls.start({
-            rotateY: [0, 360],
-            rotateX: [0, 360],
-            scale: [1, 1.3, 1],
-            transition: { duration: 1.2, ease: "easeInOut" },
-        });
-        isAnimating.current = false;
-    };
+    if (pathname !== "/contact") return null;
 
     return (
         <>
             <motion.div
                 ref={letterRef}
-                className="fixed pointer-events-auto cursor-pointer z-30"
-                style={{
-                    width: "150px",
-                    height: "100px",
-                    willChange: "transform",
-                }}
+                className="fixed pointer-events-auto cursor-pointer z-[100] touch-none"
+                style={{ width: "150px", height: "100px", willChange: "transform" }}
                 animate={controls}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
                 onClick={handleClick}
-                onDoubleClick={handleDoubleClick}
             >
                 <motion.div
-                    style={{
-                        scale: breathingScale,
-                        skew: `${skew.x}deg ${skew.y}deg`,
-                    }}
+                    style={{ scale: breathingScale }}
                     className="relative w-full h-full"
                 >
                     <Image
@@ -318,52 +247,48 @@ export function FloatingHogwartsLetter() {
                         fill
                         className="object-contain drop-shadow-2xl"
                         style={{
-                            filter: isHovered ? "drop-shadow(0 0 20px rgba(255, 0, 0, 0.6))" : "drop-shadow(0 10px 25px rgba(0,0,0,0.3))",
+                            // Magical Tint (Purple/Gold)
+                            filter: isHovered
+                                ? "drop-shadow(0 0 15px rgba(255, 215, 0, 0.7)) drop-shadow(0 0 30px rgba(128, 0, 128, 0.3)) brightness(1.1)"
+                                : "drop-shadow(0 5px 15px rgba(0,0,0,0.2))",
                             transition: "filter 0.3s ease",
-                            imageRendering: "crisp-edges",
                         }}
                         priority
                         unoptimized
                     />
 
-                    {/* Sparkles on hover */}
-                    {isHovered && (
-                        <>
-                            {[...Array(8)].map((_, i) => (
-                                <motion.div
-                                    key={i}
-                                    className="absolute w-1 h-1 bg-yellow-400 rounded-full"
-                                    style={{
-                                        left: `${Math.random() * 100}%`,
-                                        top: `${Math.random() * 100}%`,
-                                    }}
-                                    animate={{
-                                        y: [-20, -60],
-                                        opacity: [0, 1, 0],
-                                        scale: [0, 1.5, 0],
-                                    }}
-                                    transition={{
-                                        duration: 1.5,
-                                        repeat: Infinity,
-                                        delay: i * 0.15,
-                                    }}
-                                />
-                            ))}
-                        </>
-                    )}
+                    {/* Sparkles on Hover */}
+                    {isHovered && Array.from({ length: 5 }).map((_, i) => (
+                        <motion.div
+                            key={i}
+                            className="absolute bg-yellow-300 rounded-full box-shadow-[0_0_5px_gold]"
+                            style={{
+                                width: 4, height: 4,
+                                left: `${50 + Math.random() * 40 - 20}%`,
+                                top: `${50 + Math.random() * 40 - 20}%`
+                            }}
+                            animate={{
+                                y: -40,
+                                x: (Math.random() - 0.5) * 30,
+                                opacity: [0, 1, 0],
+                                scale: [0, 1.5, 0]
+                            }}
+                            transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.1 }}
+                        />
+                    ))}
                 </motion.div>
             </motion.div>
 
-            {/* Message popup */}
+            {/* Flash Message - Reverted to Pill Style */}
             {showMessage && (
                 <motion.div
                     initial={{ opacity: 0, scale: 0.8, y: -20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none"
+                    className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[9999] pointer-events-none"
                 >
-                    <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-2xl shadow-2xl border-2 border-yellow-400 text-2xl font-bold">
-                        ✨ You're a wizard! ✨
+                    <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-2xl shadow-2xl border-2 border-yellow-400 text-2xl font-bold whitespace-nowrap">
+                        ✨ You&apos;re a wizard! ✨
                     </div>
                 </motion.div>
             )}

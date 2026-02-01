@@ -48,25 +48,34 @@ export function HouseBanners() {
     const [hoveredId, setHoveredId] = useState<string | null>(null);
 
     return (
-        <div className="w-full mb-12 relative pt-6 cursor-default">
+        <div className="w-full mb-10 relative pt-0 mt-[-10px] cursor-default">
             {/* Header Section - HIGHER Z-INDEX to sit on top (z-30) */}
             <div className="relative flex items-center justify-center mb-0 z-30">
                 {/* Horizontal Rod */}
-                {/* LIGHT MODE: FORCE bg-[#b8860b] (Solid Gold). NO GRADIENTS to avoid transparency issues. */}
-                {/* DARK MODE: bg-blue-600 */}
-                <div className="absolute w-full h-[3px] bg-[#b8860b] dark:bg-blue-600 shadow-sm dark:shadow-[0_0_15px_rgba(37,99,235,0.9)] opacity-100 dark:opacity-80 rounded-full top-[50%] translate-y-[-50%]"></div>
+                {/* Visual Fix: Use [.dark_&]: instead of dark: to enforce Class Strategy */}
+                <div
+                    className="absolute w-[80%] md:w-[60%] h-[3px] opacity-100 [.dark_&]:opacity-80 rounded-full top-[50%] translate-y-[-50%]"
+                    style={{
+                        backgroundColor: "var(--rod-color, #D4AF37)",
+                    }}
+                >
+                    {/* Dark Mode Override using Arbitrary Variant */}
+                    <div className="w-full h-full bg-[#D4AF37] [.dark_&]:bg-blue-600"></div>
+                </div>
 
                 {/* Gem/Hexagon Header - Sitting ON TOP of the rod */}
-                <div className="relative px-1 bg-transparent">
+                <div className="relative px-1 bg-transparent group/header">
                     {/* Gem Container */}
-                    {/* LIGHT MODE: Border #ffae00, BG #ffc107 (Solid Yellow/Gold). */}
-                    {/* DARK MODE: Border Blue, BG Dark Blue */}
-                    <div className="relative border-2 border-[#ffae00] dark:border-blue-600 bg-[#ffc107] dark:bg-[#0a0a20] px-8 py-2 rounded-lg shadow-md dark:shadow-[0_0_20px_rgba(37,99,235,0.5)] transform skew-x-[-10deg]">
-                        {/* Inner border - Lighter Gold in Light Mode */}
-                        <div className="absolute inset-0.5 border border-[#fff8e1] dark:border-blue-400/30 rounded-sm skew-x-[0deg] opacity-60"></div>
+                    <div className="relative border-2 border-[#D4AF37] [.dark_&]:border-blue-600 bg-[#FFC107] [.dark_&]:bg-[#0a0a20] px-8 py-2 rounded-lg shadow-[0_4px_14px_rgba(212,175,55,0.4)] [.dark_&]:shadow-[0_0_20px_rgba(37,99,235,0.6)] transform skew-x-[-10deg] overflow-hidden transition-all duration-300 hover:scale-105">
 
-                        {/* Title - STRICTLY BLACK in Light Mode */}
-                        <h2 className="text-black dark:text-white font-serif tracking-[0.2em] text-sm md:text-base font-bold uppercase transform skew-x-[10deg] whitespace-nowrap drop-shadow-none dark:drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
+                        {/* Shimmer Effect */}
+                        <div className="absolute top-0 left-[-100%] w-[50%] h-full bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-[20deg] animate-[shimmer_3s_infinite]" />
+
+                        {/* Inner border */}
+                        <div className="absolute inset-0.5 border border-[#fff8e1] [.dark_&]:border-blue-400/30 rounded-sm skew-x-[0deg] opacity-60"></div>
+
+                        {/* Title */}
+                        <h2 className="text-black [.dark_&]:text-white font-serif tracking-[0.2em] text-sm md:text-base font-bold uppercase transform skew-x-[10deg] whitespace-nowrap drop-shadow-none [.dark_&]:drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] relative z-10">
                             Sorted by Skill
                         </h2>
                     </div>
@@ -74,8 +83,7 @@ export function HouseBanners() {
             </div>
 
             {/* Banners Container - LOWER Z-INDEX (z-10) to sit BEHIND header */}
-            {/* Flags overlap line upwards (mt-[-2px]) */}
-            <div className="flex justify-center items-start gap-4 md:gap-8 px-2 transition-all duration-500 relative z-10 mt-[-2px]">
+            <div className="flex justify-center items-start gap-4 md:gap-8 px-2 transition-all duration-500 relative z-10 mt-[-22px]">
                 {houses.map((house) => {
                     const isHovered = hoveredId === house.id;
                     const isAnyHovered = hoveredId !== null;
@@ -123,19 +131,19 @@ export function HouseBanners() {
 
                             {/* Text Below Banner */}
                             <div
-                                className="mt-3 text-center transition-opacity duration-300"
+                                className="mt-2 text-center transition-opacity duration-300"
                                 style={{ opacity: isFaded ? 0.3 : 1 }}
                             >
-                                {/* House Name: STRICTLY BLACK in Light Mode */}
-                                <h3 className="text-black dark:text-white/90 font-serif text-[12px] md:text-[14px] font-bold tracking-wide">
+                                {/* House Name */}
+                                <h3 className="text-black [.dark_&]:text-white/90 font-serif text-[12px] md:text-[14px] font-bold tracking-wide">
                                     {house.name}
                                 </h3>
-                                {/* Percent: STRICTLY BLACK in Light Mode */}
-                                <div className="text-lg md:text-2xl font-serif font-black text-black dark:text-white/60 leading-tight">
+                                {/* Percent */}
+                                <div className="text-lg md:text-2xl font-serif font-black text-black [.dark_&]:text-white/60 leading-tight">
                                     {house.percent}
                                 </div>
-                                {/* Skill: Gold in Light */}
-                                <div className="text-[10px] uppercase tracking-wider text-[#b8860b] dark:text-primary mt-1 font-mono font-bold opacity-100">
+                                {/* Skill */}
+                                <div className="text-[10px] uppercase tracking-wider text-[#b8860b] [.dark_&]:text-primary mt-1 font-mono font-bold opacity-100">
                                     {house.skill}
                                 </div>
                             </div>
@@ -143,6 +151,13 @@ export function HouseBanners() {
                     );
                 })}
             </div>
+
+            <style jsx global>{`
+                @keyframes shimmer {
+                    0% { left: -100%; }
+                    100% { left: 200%; }
+                }
+            `}</style>
         </div>
     );
 }

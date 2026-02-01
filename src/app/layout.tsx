@@ -6,6 +6,7 @@ import { Footer } from "@/components/footer";
 import { ParticlesBackground } from "@/components/particles-background";
 import { TimeManager } from "@/components/time-manager";
 // import { FluidCursor } from "@/components/effects/fluid-cursor";
+import { FloatingHogwartsLetter } from "@/components/effects/floating-hogwarts-letter";
 import "./globals.css";
 
 const inter = Inter({
@@ -42,6 +43,7 @@ export default function RootLayout({
           <TimeManager />
           {/* <FluidCursor /> */}
           <ParticlesBackground />
+          <FloatingHogwartsLetter />
           <Navbar />
           <main className="min-h-screen pt-20 flex flex-col">
             <div className="flex-grow">
