@@ -92,8 +92,8 @@ export default function ContactPage() {
                     </p>
 
                     <div className="space-y-4">
-                        <Link href="mailto:bargawayyug@gmail.com" className="flex items-center gap-4 p-4 rounded-lg bg-secondary/20 hover:bg-secondary/40 transition-colors group">
-                            <div className="p-3 bg-secondary rounded-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                        <Link href="mailto:bargawayyug@gmail.com" className="flex items-center gap-4 p-4 rounded-lg bg-secondary/20 hover:bg-secondary/40 data-[simulated-hover]:bg-secondary/40 transition-colors group">
+                            <div className="p-3 bg-secondary rounded-full group-hover:bg-primary group-hover:text-primary-foreground group-data-[simulated-hover]:bg-primary group-data-[simulated-hover]:text-primary-foreground transition-colors">
                                 <Mail className="w-5 h-5" />
                             </div>
                             <span className="text-lg font-medium">
@@ -101,15 +101,15 @@ export default function ContactPage() {
                             </span>
                         </Link>
 
-                        <Link href="https://linkedin.com/in/yugbargaway" target="_blank" className="flex items-center gap-4 p-4 rounded-lg bg-secondary/20 hover:bg-secondary/40 transition-colors group">
-                            <div className="p-3 bg-secondary rounded-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                        <Link href="https://linkedin.com/in/yugbargaway" target="_blank" className="flex items-center gap-4 p-4 rounded-lg bg-secondary/20 hover:bg-secondary/40 data-[simulated-hover]:bg-secondary/40 transition-colors group">
+                            <div className="p-3 bg-secondary rounded-full group-hover:bg-primary group-hover:text-primary-foreground group-data-[simulated-hover]:bg-primary group-data-[simulated-hover]:text-primary-foreground transition-colors">
                                 <Linkedin className="w-5 h-5" />
                             </div>
                             <span className="text-lg font-medium">LinkedIn</span>
                         </Link>
 
-                        <Link href="https://github.com/yugbargaway2006" target="_blank" className="flex items-center gap-4 p-4 rounded-lg bg-secondary/20 hover:bg-secondary/40 transition-colors group">
-                            <div className="p-3 bg-secondary rounded-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                        <Link href="https://github.com/yugbargaway2006" target="_blank" className="flex items-center gap-4 p-4 rounded-lg bg-secondary/20 hover:bg-secondary/40 data-[simulated-hover]:bg-secondary/40 transition-colors group">
+                            <div className="p-3 bg-secondary rounded-full group-hover:bg-primary group-hover:text-primary-foreground group-data-[simulated-hover]:bg-primary group-data-[simulated-hover]:text-primary-foreground transition-colors">
                                 <Github className="w-5 h-5" />
                             </div>
                             <span className="text-lg font-medium">GitHub</span>
@@ -123,7 +123,7 @@ export default function ContactPage() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.8 }}
                 >
-                    <Card ref={formCardRef} className="p-6 backdrop-blur-md bg-card/60">
+                    <Card ref={formCardRef} className="p-6 backdrop-blur-md bg-card/60 interactive-card data-[simulated-hover]:border-primary data-[simulated-hover]:shadow-lg data-[simulated-hover]:shadow-primary/20 transition-all duration-300">
                         <AnimatePresence mode="wait">
                             {submitStatus === "success" ? (
                                 <motion.div
@@ -190,7 +190,7 @@ export default function ContactPage() {
                                     </div>
                                     <Button
                                         type="submit"
-                                        className="w-full text-lg"
+                                        className="w-full text-lg data-[simulated-hover]:bg-primary/90 data-[simulated-hover]:shadow-lg data-[simulated-hover]:shadow-primary/20 transition-all duration-300"
                                         disabled={isSubmitting}
                                     >
                                         {isSubmitting ? "Sending Post..." : "Send Post 📪"}

@@ -5,6 +5,7 @@ import type { Container, Engine } from "tsparticles-engine";
 import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim";
 import { useTheme } from "next-themes";
+import { usePathname } from "next/navigation";
 
 export function ParticlesBackground() {
     const { theme } = useTheme();
@@ -20,9 +21,12 @@ export function ParticlesBackground() {
     const color = theme === "dark" ? "#ffd700" : "#6a1b9a"; // Gold in dark, Purple in light
     const linkedColor = theme === "dark" ? "#ffffff" : "#2c2c2c";
 
+    const pathname = usePathname();
+
     return (
         <Particles
             id="tsparticles"
+            key={pathname === "/contact" ? "contact-particles" : "global-particles"}
             init={particlesInit}
             loaded={particlesLoaded}
             className="absolute inset-0 z-0 animate-fade-in pointer-events-none"
@@ -41,6 +45,13 @@ export function ParticlesBackground() {
                         onHover: {
                             enable: true,
                             mode: "repulse",
+                        },
+                        // Enable interaction with the floating envelope
+                        onDiv: {
+                            selectors: "#hogwarts-envelope",
+                            enable: true,
+                            mode: "repulse",
+                            type: "rectangle"
                         },
                         resize: true,
                     },

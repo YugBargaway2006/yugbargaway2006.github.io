@@ -161,6 +161,14 @@ export function InteractiveTerminal() {
                 setIsTyping(true); // Lock input
                 return; // Handled by effect component
 
+            case "404":
+                output = <p className="text-purple-500">Simulating quantum destabilization...</p>;
+                setHistory([...newHistory, { command: cmd, output }]);
+                // Navigate to a non-existent route to trigger not-found.tsx
+                // Pass query param to trigger auto-return logic
+                setTimeout(() => router.push("/force-404?return=true"), 800);
+                return;
+
             case "":
                 break;
 

@@ -27,7 +27,7 @@ export function Navbar() {
         <header className="fixed top-0 w-full z-50 border-b border-border/40 bg-background/60 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
             <div className="container mx-auto px-4 h-24 flex items-center justify-between">
                 {/* Logo / Name */}
-                <Link href="/" className="font-serif text-2xl font-bold tracking-tight hover:text-primary transition-colors">
+                <Link href="/" className="font-serif text-2xl font-bold tracking-tight hover:text-primary data-[simulated-hover]:text-primary transition-colors">
                     Yug Bargaway
                 </Link>
 
@@ -38,7 +38,7 @@ export function Navbar() {
                             key={item.href}
                             href={item.href}
                             className={cn(
-                                "text-base font-medium transition-colors hover:text-primary relative group",
+                                "text-base font-medium transition-colors hover:text-primary data-[simulated-hover]:text-primary relative group",
                                 pathname === item.href ? "text-primary" : "text-muted-foreground"
                             )}
                         >
@@ -61,16 +61,16 @@ export function Navbar() {
                     </div>
 
                     <div className="hidden md:flex items-center gap-2">
-                        <Link href="https://github.com/yugbargaway2006" target="_blank" className="p-2 hover:bg-secondary rounded-full transition-colors">
+                        <Link href="https://github.com/yugbargaway2006" target="_blank" className="p-2 hover:bg-secondary data-[simulated-hover]:bg-secondary rounded-full transition-colors">
                             <Github className="w-5 h-5" />
                         </Link>
-                        <Link href="https://linkedin.com/in/yugbargaway" target="_blank" className="p-2 hover:bg-secondary rounded-full transition-colors">
+                        <Link href="https://linkedin.com/in/yugbargaway" target="_blank" className="p-2 hover:bg-secondary data-[simulated-hover]:bg-secondary rounded-full transition-colors">
                             <Linkedin className="w-5 h-5" />
                         </Link>
-                        <Link href="https://codeforces.com/profile/Yug_Bargaway" target="_blank" className="p-2 hover:bg-secondary rounded-full transition-colors" title="Codeforces">
+                        <Link href="https://codeforces.com/profile/Yug_Bargaway" target="_blank" className="p-2 hover:bg-secondary data-[simulated-hover]:bg-secondary rounded-full transition-colors" title="Codeforces">
                             <Codeforces className="w-5 h-5" />
                         </Link>
-                        <Link href="https://instagram.com/yugbargaway" target="_blank" className="p-2 hover:bg-secondary rounded-full transition-colors">
+                        <Link href="https://instagram.com/yugbargaway" target="_blank" className="p-2 hover:bg-secondary data-[simulated-hover]:bg-secondary rounded-full transition-colors">
                             <Instagram className="w-5 h-5" />
                         </Link>
                         <ThemeToggle />

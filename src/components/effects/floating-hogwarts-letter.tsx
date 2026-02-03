@@ -181,21 +181,24 @@ export function FloatingHogwartsLetter() {
                             const eventOpts = { bubbles: true, cancelable: true, view: window };
                             prevHoveredElement.current.dispatchEvent(new MouseEvent('mouseleave', eventOpts));
                             prevHoveredElement.current.dispatchEvent(new MouseEvent('mouseout', eventOpts));
-                            prevHoveredElement.current.dispatchEvent(new PointerEvent('pointerout', eventOpts));
-                            prevHoveredElement.current.dispatchEvent(new PointerEvent('pointerleave', eventOpts));
+
+                            // SIMULATED HOVER: Remove attribute
+                            prevHoveredElement.current.removeAttribute("data-simulated-hover");
+
                             if (prevHoveredElement.current instanceof HTMLElement) prevHoveredElement.current.blur();
                         } catch (e) { }
                     }
                     // Enter new
-                    const interactive = elBelow.closest('a, button, [role="button"]');
+                    const interactive = elBelow.closest('a, button, [role="button"], .interactive-card');
                     if (interactive) {
                         const eventOpts = { bubbles: true, cancelable: true, view: window };
                         interactive.dispatchEvent(new MouseEvent('mouseenter', eventOpts));
                         interactive.dispatchEvent(new MouseEvent('mouseover', eventOpts));
-                        interactive.dispatchEvent(new PointerEvent('pointerover', eventOpts));
-                        interactive.dispatchEvent(new PointerEvent('pointerenter', eventOpts));
-                        // Try focusing to force styles (use careful focus that doesnt scroll)
-                        if (interactive instanceof HTMLElement) interactive.focus({ preventScroll: true });
+
+                        // SIMULATED HOVER: Manually set attribute for styling
+                        interactive.setAttribute("data-simulated-hover", "true");
+
+                        // REMOVED focus() call to prevent stealing focus
                         prevHoveredElement.current = interactive;
                     } else {
                         prevHoveredElement.current = null;
@@ -229,6 +232,7 @@ export function FloatingHogwartsLetter() {
     return (
         <>
             <motion.div
+                id="hogwarts-envelope"
                 ref={letterRef}
                 className="fixed pointer-events-auto cursor-pointer z-[100] touch-none"
                 style={{ width: "150px", height: "100px", willChange: "transform" }}

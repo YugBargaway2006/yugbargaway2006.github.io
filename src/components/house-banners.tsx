@@ -96,11 +96,12 @@ export function HouseBanners() {
                             onMouseEnter={() => setHoveredId(house.id)}
                             onMouseLeave={() => setHoveredId(null)}
                         >
-                            {/* Banner Container */}
+                            {/* Banner Container - Fixed Height to prevent layout shift */}
                             <div
-                                className="relative flex flex-col items-center transition-all duration-300 ease-out"
+                                className="relative flex flex-col items-center justify-start h-[100px] md:h-[135px] transition-all duration-300 ease-out"
                                 style={{
                                     opacity: isFaded ? 0.4 : 1,
+                                    transform: "none",
                                     filter: isHovered
                                         ? "contrast(1.1) brightness(1.1) saturate(1.2)"
                                         : (isFaded ? "grayscale(0.6) blur(0.5px)" : "none"),
@@ -109,7 +110,12 @@ export function HouseBanners() {
                             >
                                 {/* Banner Shape */}
                                 <div
-                                    className="w-[58px] md:w-[80px] h-[78px] md:h-[110px] relative shadow-lg flex flex-col items-center justify-center pt-1"
+                                    className={`
+                                        w-[58px] md:w-[80px] 
+                                        relative shadow-lg flex flex-col items-center justify-start pt-4
+                                        transition-all duration-300 ease-out
+                                        ${isHovered ? "h-[95px] md:h-[135px]" : (isFaded ? "h-[70px] md:h-[100px]" : "h-[78px] md:h-[110px]")}
+                                    `}
                                     style={{
                                         backgroundColor: house.color,
                                         clipPath: "polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%)",
