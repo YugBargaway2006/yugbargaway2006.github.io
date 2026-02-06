@@ -22,11 +22,11 @@ interface Project {
 const projects: Project[] = [
     {
         id: "proj1",
-        title: "High Performance Trading Engine",
+        title: "High Performance Trade Matching Engine",
         category: "Systems Programming",
         description: "Built a low-latency C++17 transaction processing engine delivering 641ns critical-path latency.",
-        repoUrl: "https://github.com/yugbargaway",
-        liveUrl: "https://github.com/yugbargaway",
+        repoUrl: "https://github.com/YugBargaway2006/Software_Modules/tree/main/Order_Book",
+        liveUrl: "/trading-engine/index.html",
         tags: ["C++17", "UDP/IP", "Zero-Allocation", "Low-Latency"],
         details: `
       <p>Designed and implemented a high-performance transaction processing system for critical financial operations.</p>

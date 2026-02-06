@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Jupiter - Low-Latency HFT Limit Order Book. A high-performance C++ trading engine achieving 641ns minimum latency through flat-array storage and object pooling.">
+    <meta name="keywords" content="HFT, High Frequency Trading, Order Book, C++, Low Latency, Trading Engine, Financial Technology">
+    <meta name="author" content="Yug Bargaway">
+    
+    <title>Jupiter | Low-Latency HFT Order Book</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Chart.js for Performance Graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    
+    <!-- Mermaid for Flowcharts -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'dark',
+            themeVariables: {
+                primaryColor: '#6366f1',
+                primaryTextColor: '#e2e8f0',
+                primaryBorderColor: '#818cf8',
+                lineColor: '#94a3b8',
+                secondaryColor: '#8b5cf6',
+                tertiaryColor: '#ec4899',
+                background: '#1e293b',
+                mainBkg: '#1e293b',
+                textColor: '#e2e8f0',
+                fontSize: '16px'
+            }
+        });
+    </script>
+</head>
+<body>
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-background"></div>
+        <div class="container hero-content">
+            <div class="badge">High-Frequency Trading</div>
+            <h1 class="hero-title">
+                <span class="gradient-text">Jupiter</span>
+                <br>Low-Latency Order Book
+            </h1>
+            <p class="hero-subtitle">
+                A clean-room HFT matching engine achieving <strong>641ns minimum latency</strong> through 
+                flat-array storage, object pooling, and zero-copy networking.
+            </p>
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <div class="stat-value">641ns</div>
+                    <div class="stat-label">Min Latency</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">1.5M</div>
+                    <div class="stat-label">Orders/Sec</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">O(1)</div>
+                    <div class="stat-label">Operations</div>
+                </div>
+            </div>
+            <div class="hero-actions">
+                <a href="https://github.com/YugBargaway2006/Software_Modules/tree/main/Order_Book" target="_blank" class="btn btn-primary">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+                    </svg>
+                    View on GitHub
+                </a>
+                <a href="#architecture" class="btn btn-secondary">Explore Architecture</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-icon"></div>
+        </div>
+    </header>
+
+    <!-- Problem & Solution -->
+    <section class="section section-dark" id="overview">
+        <div class="container">
+            <h2 class="section-title">The Challenge</h2>
+            <div class="two-column">
+                <div class="problem-card">
+                    <div class="icon-wrapper problem-icon">⚠️</div>
+                    <h3>Traditional Approach</h3>
+                    <ul class="problem-list">
+                        <li><strong>O(log N) operations</strong> using Red-Black Trees (std::map)</li>
+                        <li><strong>Poor cache locality</strong> due to pointer chasing</li>
+                        <li><strong>Runtime allocation</strong> causing malloc/free overhead</li>
+                        <li><strong>Microsecond latencies</strong> unsuitable for HFT</li>
+                    </ul>
+                </div>
+                <div class="solution-card">
+                    <div class="icon-wrapper solution-icon">✨</div>
+                    <h3>Jupiter's Solution</h3>
+                    <ul class="solution-list">
+                        <li><strong>Flat-array storage</strong> for O(1) direct indexing</li>
+                        <li><strong>Contiguous memory</strong> maximizing cache hits</li>
+                        <li><strong>Object pooling</strong> eliminating runtime allocation</li>
+                        <li><strong>Sub-microsecond latency</strong> at 641ns minimum</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture -->
+    <section class="section" id="architecture">
+        <div class="container">
+            <h2 class="section-title">System Architecture</h2>
+            <p class="section-subtitle">Core components designed for maximum performance</p>
+            
+            <div class="architecture-grid">
+                <div class="arch-card">
+                    <div class="arch-icon">📊</div>
+                    <h3>Flat-Array Storage</h3>
+                    <p>Prices converted to integer ticks enable direct array indexing. <code>bids[10005]</code> represents all orders at $100.05.</p>
+                    <div class="tech-tag">O(1) Lookup</div>
+                </div>
+                
+                <div class="arch-card">
+                    <div class="arch-icon">♻️</div>
+                    <h3>Object Pool</h3>
+                    <p>Pre-allocated 100,000 Order objects. Acquire/release pattern eliminates malloc/free during trading sessions.</p>
+                    <div class="tech-tag">Zero Allocation</div>
+                </div>
+                
+                <div class="arch-card">
+                    <div class="arch-icon">🌐</div>
+                    <h3>Zero-Copy Networking</h3>
+                    <p>Raw UDP sockets with packed binary structs. Direct network-to-engine data flow without deserialization overhead.</p>
+                    <div class="tech-tag">16 Bytes/Packet</div>
+                </div>
+                
+                <div class="arch-card">
+                    <div class="arch-icon">🔒</div>
+                    <h3>Type Safety</h3>
+                    <p>Strong typing for Prices and Quantities prevents mixed-unit arithmetic errors at compile time.</p>
+                    <div class="tech-tag">Compile-Time Safety</div>
+                </div>
+            </div>
+
+            <!-- Flowchart -->
+            <div class="flowchart-container">
+                <h3 class="subsection-title">Order Matching Flow</h3>
+                <div class="mermaid">
+flowchart TD
+    A[Receive UDP Packet] --> B{Decode Order}
+    B --> C{Check Side}
+    C -->|BID| D[Match vs Best Ask]
+    C -->|ASK| E[Match vs Best Bid]
+    D --> F{Price >= Ask?}
+    E --> G{Price <= Bid?}
+    F -->|Yes| H[Execute Trade]
+    F -->|No| I[Add to Bid Book]
+    G -->|Yes| H
+    G -->|No| J[Add to Ask Book]
+    H --> K{Quantity Remaining?}
+    K -->|Yes| L{More Matches?}
+    K -->|No| M[Trade Complete]
+    L -->|Yes| H
+    L -->|No| I
+    L -->|No| J
+    I --> M
+    J --> M
+    M --> N[Log Trade & Benchmark]
+    
+    style A fill:#6366f1,stroke:#818cf8,color:#fff
+    style H fill:#10b981,stroke:#34d399,color:#fff
+    style M fill:#8b5cf6,stroke:#a78bfa,color:#fff
+    style N fill:#ec4899,stroke:#f472b6,color:#fff
+                </div>
+            </div>
+
+            <!-- Memory Management Diagram -->
+            <div class="flowchart-container">
+                <h3 class="subsection-title">Memory Management Architecture</h3>
+                <div class="mermaid">
+graph TD
+    A[Startup] --> B[Allocate 100K Orders]
+    B --> C[Free List Stack]
+    C --> D{acquire}
+    D --> E[Pop from Stack]
+    E --> F[Placement New]
+    F --> G[Active Order]
+    G --> H{Trade Complete}
+    H --> I{release}
+    I --> J[Call Destructor]
+    J --> K[Push to Stack]
+    K --> C
+    
+    style B fill:#6366f1,stroke:#818cf8,color:#fff
+    style F fill:#10b981,stroke:#34d399,color:#fff
+    style J fill:#f59e0b,stroke:#fbbf24,color:#fff
+    style C fill:#8b5cf6,stroke:#a78bfa,color:#fff
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Performance Benchmarks -->
+    <section class="section section-dark" id="performance">
+        <div class="container">
+            <h2 class="section-title">Performance Benchmarks</h2>
+            <p class="section-subtitle">Measured on consumer laptop (Linux/GCC -O3)</p>
+            
+            <div class="benchmark-grid">
+                <div class="chart-container">
+                    <h3>Latency Distribution</h3>
+                    <canvas id="latencyChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Throughput Analysis</h3>
+                    <canvas id="throughputChart"></canvas>
+                </div>
+            </div>
+
+            <div class="metrics-cards">
+                <div class="metric-card">
+                    <div class="metric-icon">⚡</div>
+                    <div class="metric-content">
+                        <div class="metric-title">Minimum Latency</div>
+                        <div class="metric-number">641 <span>ns</span></div>
+                        <div class="metric-description">Hot cache path - true theoretical speed</div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">📈</div>
+                    <div class="metric-content">
+                        <div class="metric-title">Average Latency</div>
+                        <div class="metric-number">2,700 <span>ns</span></div>
+                        <div class="metric-description">Includes OS jitter and context switching</div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🚀</div>
+                    <div class="metric-content">
+                        <div class="metric-title">Peak Throughput</div>
+                        <div class="metric-number">1.5M <span>orders/s</span></div>
+                        <div class="metric-description">Sustained order processing rate</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Code Showcase -->
+    <section class="section" id="code">
+        <div class="container">
+            <h2 class="section-title">Key Innovations</h2>
+            <p class="section-subtitle">Code snippets highlighting technical excellence</p>
+            
+            <div class="tabs">
+                <div class="tab-buttons">
+                    <button class="tab-button active" data-tab="flat-array">Flat-Array Storage</button>
+                    <button class="tab-button" data-tab="object-pool">Object Pool</button>
+                    <button class="tab-button" data-tab="zero-copy">Zero-Copy Network</button>
+                </div>
+                
+                <div class="tab-content active" id="flat-array">
+                    <div class="code-header">
+                        <span class="code-file">order_book.h</span>
+                        <span class="code-lang">C++17</span>
+                    </div>
+                    <pre><code class="language-cpp">// Traditional: O(log N) with std::map
+// std::map&lt;double, std::list&lt;Order*&gt;, std::greater&lt;double&gt;&gt; bids;
+
+// Jupiter: O(1) with flat-array indexing
+std::vector&lt;std::list&lt;Order*&gt;&gt; bids;  // Size: 1,000,000
+std::vector&lt;std::list&lt;Order*&gt;&gt; asks;
+
+// Price to tick conversion: $100.05 → 10005
+int tick = (int)(price * 100);
+
+// Direct O(1) access
+bids[tick].push_back(newOrder);
+max_bid_tick = std::max(max_bid_tick, tick);</code></pre>
+                    <div class="code-benefit">
+                        <strong>Performance Gain:</strong> Eliminates tree traversal overhead, maximizes cache locality
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="object-pool">
+                    <div class="code-header">
+                        <span class="code-file">order_pool.cpp</span>
+                        <span class="code-lang">C++17</span>
+                    </div>
+                    <pre><code class="language-cpp">template&lt;typename T&gt;
+template&lt;typename... Args&gt;
+T* Order_Pool&lt;T&gt;::acquire(Args&&... args) {
+    if(free_list.size() == 0) {
+        throw std::runtime_error("Order Book Size Exhausted");
+    }
+    
+    T* ptr = free_list.back();
+    free_list.pop_back();
+    
+    // Placement new: construct in pre-allocated memory
+    new (ptr) T(std::forward&lt;Args&gt;(args)...);
+    
+    return ptr;
+}
+
+void Order_Pool&lt;T&gt;::release(T* obj) {
+    obj-&gt;~T();  // Manual destructor call
+    free_list.push_back(obj);  // Return to pool
+}</code></pre>
+                    <div class="code-benefit">
+                        <strong>Performance Gain:</strong> Zero runtime allocation, eliminates malloc/free syscalls
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="zero-copy">
+                    <div class="code-header">
+                        <span class="code-file">protocol.h + market_data_receiver.cpp</span>
+                        <span class="code-lang">C++17</span>
+                    </div>
+                    <pre><code class="language-cpp">// Packed binary struct (no padding)
+#pragma pack(push, 1)
+class OrderMessage {
+public:
+    MessageHeader header;
+    uint32_t orderID;
+    uint32_t price;     // Network byte order (Big Endian)
+    uint32_t quantity;
+    char side;          // 'B' or 'S'
+};
+#pragma pack(pop)
+
+// Zero-copy deserialization
+OrderMessage* msg = reinterpret_cast&lt;OrderMessage*&gt;(buffer);
+
+// Network to host byte order conversion
+uint32_t id = ntohl(msg-&gt;orderID);
+uint32_t price_ticks = ntohl(msg-&gt;price);
+uint32_t quantity = ntohl(msg-&gt;quantity);</code></pre>
+                    <div class="code-benefit">
+                        <strong>Performance Gain:</strong> Direct memory interpretation, 16 bytes per packet, no deserialization overhead
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Stack -->
+    <section class="section section-dark" id="tech">
+        <div class="container">
+            <h2 class="section-title">Technical Stack</h2>
+            
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h4>Core Technology</h4>
+                    <ul>
+                        <li><strong>C++17</strong> - Modern language features</li>
+                        <li><strong>CMake</strong> - Build system</li>
+                        <li><strong>GCC/Clang</strong> - Optimizing compilers (-O3 -march=native)</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-card">
+                    <h4>Performance Optimizations</h4>
+                    <ul>
+                        <li><strong>Flat-array indexing</strong> - O(1) operations</li>
+                        <li><strong>Object pooling</strong> - Zero allocation</li>
+                        <li><strong>Cache locality</strong> - Contiguous memory</li>
+                        <li><strong>Placement new</strong> - In-place construction</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-card">
+                    <h4>Networking</h4>
+                    <ul>
+                        <li><strong>UDP Multicast</strong> - Low-latency data feed</li>
+                        <li><strong>POSIX Sockets</strong> - Raw network access</li>
+                        <li><strong>Binary Protocol</strong> - Packed structs (16 bytes)</li>
+                        <li><strong>Big Endian</strong> - Network byte order</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-card">
+                    <h4>Testing & Quality</h4>
+                    <ul>
+                        <li><strong>Google Test</strong> - Unit testing framework</li>
+                        <li><strong>Benchmarking</strong> - High-resolution timers</li>
+                        <li><strong>Strong typing</strong> - Compile-time safety</li>
+                        <li><strong>RAII</strong> - Resource management</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Future Improvements -->
+    <section class="section" id="future">
+        <div class="container">
+            <h2 class="section-title">Future Enhancements</h2>
+            
+            <div class="roadmap">
+                <div class="roadmap-item">
+                    <div class="roadmap-marker">1</div>
+                    <div class="roadmap-content">
+                        <h4>Kernel Bypass</h4>
+                        <p>Port to <strong>DPDK</strong> or <strong>Solarflare OpenOnload</strong> to skip Linux kernel stack and achieve even lower latencies.</p>
+                    </div>
+                </div>
+                
+                <div class="roadmap-item">
+                    <div class="roadmap-marker">2</div>
+                    <div class="roadmap-content">
+                        <h4>Lock-Free Queue</h4>
+                        <p>Implement SPSC ring buffer to decouple network and matching threads for higher throughput.</p>
+                    </div>
+                </div>
+                
+                <div class="roadmap-item">
+                    <div class="roadmap-marker">3</div>
+                    <div class="roadmap-content">
+                        <h4>Multi-Core Scaling</h4>
+                        <p>Pin engine thread to dedicated CPU core with <code>isolcpus</code> to reduce context switching jitter.</p>
+                    </div>
+                </div>
+                
+                <div class="roadmap-item">
+                    <div class="roadmap-marker">4</div>
+                    <div class="roadmap-content">
+                        <h4>TCP Recovery</h4>
+                        <p>Implement snapshot mechanism to rebuild order book state if UDP packets are dropped.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / CTA -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-main">
+                    <h3>Jupiter Order Book</h3>
+                    <p>High-performance C++ trading engine demonstrating systems programming excellence</p>
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com/YugBargaway2006/Software_Modules/tree/main/Order_Book" target="_blank" class="footer-link">
+                        <svg width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+                        </svg>
+                        GitHub Repository
+                    </a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Yug Bargaway. Built with modern web standards.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
