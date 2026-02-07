@@ -39,7 +39,7 @@ export function FloatingHogwartsLetter() {
 
     // Main Physics Loop
     useEffect(() => {
-        if (pathname !== "/contact") return;
+        if (pathname !== "/contact" && pathname !== "/contact/") return;
 
         let animationId: number;
         const letterSize = 150;
@@ -227,7 +227,7 @@ export function FloatingHogwartsLetter() {
         }
     };
 
-    if (pathname !== "/contact") return null;
+    if (pathname !== "/contact" && pathname !== "/contact/") return null;
 
     return (
         <>

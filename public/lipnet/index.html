@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beyond Sound - Visual Speech Recognition</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header class="hero">
+            <h1 class="title">Beyond Sound</h1>
+            <p class="subtitle">AI-Powered Visual Speech Recognition</p>
+            <p class="description">Experience cutting-edge lip-reading technology powered by deep learning</p>
+        </header>
+
+        <main class="demo-section">
+            <div class="controls">
+                <label for="video-select" class="control-label">Choose a demo video:</label>
+                <select id="video-select" class="video-selector">
+                    <option value="">Select a video...</option>
+                </select>
+            </div>
+
+            <!-- Original Video Display (shown after selection) -->
+            <div class="video-preview-container" id="video-preview-container" style="display: none;">
+                <div class="video-card">
+                    <h3>Original Video</h3>
+                    <div class="video-wrapper">
+                        <video id="original-video" class="video-frame" loop muted>
+                            <source src="" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
+                <div class="process-button-wrapper">
+                    <button id="process-btn" class="process-button">
+                        <span class="btn-icon">🧠</span>
+                        <span class="btn-text">Process with AI</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Processing Animation -->
+            <div class="processing-container" id="processing-container" style="display: none;">
+                <div class="processing-spinner"></div>
+                <p class="processing-text">Analyzing lip movements...</p>
+                <div class="processing-steps">
+                    <div class="step">
+                        <span class="step-icon">📹</span>
+                        <span class="step-text">Extracting frames</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-icon">🤖</span>
+                        <span class="step-text">Running neural network</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-icon">💬</span>
+                        <span class="step-text">Generating text</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Display (shown after processing) -->
+            <div class="demo-container" id="demo-container" style="display: none;">
+                <div class="video-card">
+                    <h3>Processed Sequence</h3>
+                    <div class="video-wrapper">
+                        <img id="video-display" src="" alt="Lip reading video" class="video-frame">
+                    </div>
+                </div>
+
+                <div class="results-card">
+                    <h3>Recognition Results</h3>
+                    <div class="result-item">
+                        <span class="result-label">Original Transcript:</span>
+                        <p id="original-text" class="result-text"></p>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">AI Prediction:</span>
+                        <p id="predicted-text" class="result-text prediction"></p>
+                    </div>
+                    <div class="accuracy-badge" id="accuracy-badge">
+                        <span class="accuracy-label">Accuracy:</span>
+                        <span id="accuracy-value" class="accuracy-value">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h2>How It Works</h2>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <div class="icon">📹</div>
+                        <h4>Video Processing</h4>
+                        <p>Extract and analyze lip movements from video frames</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="icon">🧠</div>
+                        <h4>Deep Learning</h4>
+                        <p>3D CNNs and Bidirectional GRUs process spatial-temporal features</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="icon">💬</div>
+                        <h4>Text Generation</h4>
+                        <p>CTC loss enables accurate sequence-to-sequence transcription</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Built with PyTorch | LipNet Architecture | Interactive Demo</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

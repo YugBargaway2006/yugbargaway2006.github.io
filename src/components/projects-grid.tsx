@@ -45,8 +45,8 @@ const projects: Project[] = [
         title: "Visual Speech Recognition Using Deep Learning",
         category: "Deep Learning",
         description: "LipNet end-to-end visual speech recognition using STCNN + Bi-RNN + CTC architecture.",
-        repoUrl: "https://github.com/yugbargaway",
-        liveUrl: "https://github.com/yugbargaway",
+        repoUrl: "https://github.com/YugBargaway2006/Beyond-Sound_AI-Powered-Visual-Speech-Recognition",
+        liveUrl: "/lipnet/index.html",
         tags: ["Python", "TensorFlow", "STCNN", "Bi-RNN", "CTC"],
         details: `
       <p>Implemented the LipNet end-to-end model for sentence-level lip reading through visual signal recognition.</p>

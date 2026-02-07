@@ -39,11 +39,13 @@ export function Navbar() {
                             href={item.href}
                             className={cn(
                                 "text-base font-medium transition-colors hover:text-primary data-[simulated-hover]:text-primary relative group",
-                                pathname === item.href ? "text-primary" : "text-muted-foreground"
+                                pathname === item.href || pathname === item.href + "/" || pathname + "/" === item.href
+                                    ? "text-primary"
+                                    : "text-muted-foreground"
                             )}
                         >
                             {item.name}
-                            {pathname === item.href && (
+                            {(pathname === item.href || pathname === item.href + "/" || pathname + "/" === item.href) && (
                                 <motion.span
                                     layoutId="navbar-indicator"
                                     className="absolute left-0 -bottom-1 w-full h-0.5 bg-primary rounded-full"
@@ -100,7 +102,9 @@ export function Navbar() {
                             onClick={() => setIsOpen(false)}
                             className={cn(
                                 "text-lg font-medium",
-                                pathname === item.href ? "text-primary" : "text-foreground"
+                                pathname === item.href || pathname === item.href + "/" || pathname + "/" === item.href
+                                    ? "text-primary"
+                                    : "text-foreground"
                             )}
                         >
                             {item.name}
