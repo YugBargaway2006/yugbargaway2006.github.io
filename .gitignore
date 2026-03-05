@@ -40,3 +40,6 @@ YugResume.pdf
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# artifacts
+stitch_achievements_skills_accolades.zip

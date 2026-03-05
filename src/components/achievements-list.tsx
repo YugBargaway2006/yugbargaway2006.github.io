@@ -19,13 +19,13 @@ interface Achievement {
 const achievements: Achievement[] = [
     {
         id: "ach1",
-        title: "Codeforces Expert (1612)",
+        title: "Codeforces Expert (1742)",
         organization: "Codeforces",
         date: "2024",
         icon: "award",
         description: "Expert rating demonstrating strong algorithmic problem-solving and competitive programming skills.",
         details: `
-      <p>Achieved Codeforces Expert rating (1612), demonstrating strong expertise in:</p>
+      <p>Achieved Codeforces Expert rating (1742), demonstrating strong expertise in:</p>
       <ul class="list-disc pl-5 space-y-2 mt-4">
         <li>Algorithmic problem-solving under time constraints</li>
         <li>Advanced data structures and algorithms</li>
