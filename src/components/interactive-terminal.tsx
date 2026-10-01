@@ -275,7 +275,7 @@ export function InteractiveTerminal() {
                                     theme === "dark" ? "text-gray-300" : "text-[#657b83]"
                                 )}>
                                     <span className="flex items-center gap-2">
-                                        {">"} <strong className={theme === "dark" ? "text-white" : "text-[#2aa198]"}>Magical Tech Geek</strong>
+                                        {">"} <strong className={theme === "dark" ? "text-white" : "text-[#2aa198]"}>Tech Geek</strong>
                                     </span>
                                     <span className={cn("hidden md:inline", theme === "dark" ? "text-gray-600" : "text-[#93a1a1]")}>|</span>
                                     <span className={theme === "dark" ? "text-gray-400" : "text-[#586e75]"}>CS Undergrad @ IIT Kharagpur</span>
@@ -285,7 +285,7 @@ export function InteractiveTerminal() {
                                 "italic text-base md:text-lg leading-relaxed border-l-4 pl-4 py-2 my-4 rounded-r-lg",
                                 theme === "dark" ? "border-[#ffbd2e] bg-white/5 text-gray-300" : "border-[#d33682] bg-[#fdf6e3] text-[#657b83]"
                             )}>
-                                "Driven by curiosity, fueled by exploration. I thrive on solving complex problems and building systems that push the limits of what's possible."
+                                "Thriving on solving complex problems and building systems that push the limits of what's possible."
                             </p>
 
                             <div className="text-sm opacity-80 mt-8">
