@@ -20,7 +20,7 @@ If you want to stay up to date with my posts, I am planning to have a newsletter
 Send me an email to say hi, or connect via the socials.
 
 - Email: [bargawayyug@gmail.com](mailto:bargawayyug@gmail.com)
-- [Email Newsletter: Coming Soon!](Coming Soon!)
+- Email Newsletter: Coming Soon!
 - [GitHub](https://github.com/YugBargaway2006)
 - [Bluesky](https://bsky.app/profile/yug31.bsky.social)
 

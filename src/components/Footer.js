@@ -22,7 +22,7 @@ const links = [
     Icon: Bluesky,
   },
   {
-    url: 'https://ko-fi.com',
+    url: 'https://waitbutwhy.com/',
     label: 'Buy me a coffee',
     Icon: Coffee,
   },
