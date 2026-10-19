@@ -6,6 +6,7 @@ import { Layout } from '../components/Layout'
 import { Hero } from '../components/Hero'
 import { SEO } from '../components/SEO'
 import { PageLayout } from '../components/PageLayout'
+import floppy from '../assets/floppylogo.png'
 import config from '../utils/config'
 
 export default function PageTemplate({ data }) {
@@ -18,7 +19,11 @@ export default function PageTemplate({ data }) {
       <SEO customTitle={title} customDescription={description} />
 
       <PageLayout>
-        <Hero title={title} thumbnail={thumbnail} />
+        <Hero
+          title={title}
+          thumbnail={thumbnail}
+          icon={thumbnail ? null : (post.frontmatter.slug === 'me' ? floppy : null)}
+        />
         <div
           id={`article-${post.frontmatter.slug}`}
           className="page-article"

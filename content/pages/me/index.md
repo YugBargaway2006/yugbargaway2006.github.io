@@ -5,6 +5,8 @@ slug: me
 description: About Yug Bargaway - B.Tech CS student at IIT Kharagpur
 ---
 
+<img src="/yug_about.png" class="image-float" alt="Yug Bargaway" />
+
 Hello! I'm **Yug Bargaway**, a B.Tech student in Computer Science & Engineering at **IIT Kharagpur**.
 
 I specialize in data analytics, machine learning, and building high-performance software systems.

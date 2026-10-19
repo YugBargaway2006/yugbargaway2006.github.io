@@ -2179,6 +2179,7 @@ img {
 img.image-float {
   margin: 1.25rem 0;
   height: auto;
+  border-radius: var(--border-radius);
 }
 
 @media screen and (min-width: 800px) {
@@ -2188,6 +2189,7 @@ img.image-float {
     margin: 0 0 1.5rem 1.5rem;
     max-width: 300px;
     height: auto;
+    border-radius: var(--border-radius);
   }
 }
 
