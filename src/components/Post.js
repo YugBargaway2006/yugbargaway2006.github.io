@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import { Link } from 'gatsby'
 
 import { isNewPost, getFormattedDate } from '../utils/helpers'
+import defaultThumbnail from '../assets/floppylogo.png'
 
 const highlightMatch = (text, query) => {
   if (!query) {
@@ -51,7 +52,7 @@ export const Post = ({ node, prefix, includeYear, query, detailed, number }) => 
         className="post detailed"
       >
         <div className="post-thumbnail">
-          {node.thumbnail && <img src={node.thumbnail} alt="" />}
+          <img src={node.thumbnail || defaultThumbnail} alt="" />
         </div>
         <div className="post-info">
           <div className="post-title">
