@@ -9,7 +9,6 @@ import { Mail } from '../assets/Mail'
 import { GitHub } from '../assets/GitHub'
 import { LinkedIn } from '../assets/LinkedIn'
 import { FloatingHogwartsLetter } from '../components/FloatingHogwartsLetter'
-import { ConstellationCanvas } from '../components/ConstellationCanvas'
 import contactIcon from '../assets/nav-contact.png'
 import config from '../utils/config'
 
@@ -83,8 +82,6 @@ export default function Contact() {
         <Hero title={title} description={description} icon={contactIcon} />
 
         <div className="contact-container">
-          <ConstellationCanvas />
-
           <div className="contact-grid">
             {/* Left Column: Info & Links */}
             <div className="contact-info">
@@ -100,7 +97,7 @@ export default function Contact() {
                   className="contact-link-card interactive-card"
                 >
                   <div className="contact-icon-bubble">
-                    <Mail size={20} />
+                    <Mail size={18} />
                   </div>
                   <div>
                     bargawayyug <span className="opacity-60">[at]</span> gmail{' '}
@@ -115,7 +112,7 @@ export default function Contact() {
                   className="contact-link-card interactive-card"
                 >
                   <div className="contact-icon-bubble">
-                    <LinkedIn size={20} />
+                    <LinkedIn size={18} />
                   </div>
                   <div>LinkedIn</div>
                 </a>
@@ -127,7 +124,7 @@ export default function Contact() {
                   className="contact-link-card interactive-card"
                 >
                   <div className="contact-icon-bubble">
-                    <GitHub size={20} />
+                    <GitHub size={18} />
                   </div>
                   <div>GitHub</div>
                 </a>
@@ -152,7 +149,7 @@ export default function Contact() {
                     <button
                       type="button"
                       className="button"
-                      style={{ marginTop: '1.5rem' }}
+                      style={{ marginTop: '1.25rem', fontSize: '0.9rem' }}
                       onClick={() => setSubmitStatus('idle')}
                     >
                       Send Another Message
