@@ -92,7 +92,7 @@ export const projectsList = [
     date: "2025",
     slug: "Local_Inn",
     repo: "YugBargaway2006/Local_Inn",
-    tagline: "Variational Autoencoder implementation in PyTorch for POI anomaly detection.",
+    tagline: "Variational Autoencoder implementation in PyTorch for localization pipeline",
     url: "https://github.com/YugBargaway2006/Local_Inn",
     sourceUrl: "https://github.com/YugBargaway2006/Local_Inn",
     stargazersUrl: "https://github.com/YugBargaway2006/Local_Inn/stargazers",
