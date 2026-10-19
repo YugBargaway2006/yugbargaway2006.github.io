@@ -13,6 +13,7 @@ import { shelvesList } from '../data/shelvesList'
 import { getSimplifiedPosts, slugify } from '../utils/helpers'
 import config from '../utils/config'
 import github from '../assets/nav-github.png'
+import { StarIcon } from '../assets/StarIcon'
 
 export default function Index({ data }) {
   const latestPosts = data.latestPosts.edges
@@ -117,11 +118,36 @@ export default function Index({ data }) {
             {projectsList
               .filter((project) => project.highlight)
               .map((project) => {
+                const sourceLink =
+                  project.sourceUrl ||
+                  (project.repo
+                    ? `https://github.com/${project.repo}`
+                    : `https://github.com/YugBargaway2006/${project.slug}`)
+
+                const stargazersLink =
+                  project.stargazersUrl ||
+                  (project.repo
+                    ? `https://github.com/${project.repo}/stargazers`
+                    : `https://github.com/YugBargaway2006/${project.slug}/stargazers`)
+
                 return (
-                  <div className="card" key={`highlight-${project.slug}`}>
+                  <div className="card" key={`highlight-${project.name}`}>
+                    <div className="stars">
+                      <div className="star">
+                        <a
+                          href={stargazersLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          title={`${project.stars ?? 0} stars on GitHub`}
+                        >
+                          {Number(project.stars ?? 0).toLocaleString()}
+                        </a>
+                        <StarIcon />
+                      </div>
+                    </div>
                     <time>{project.date}</time>
                     <a
-                      href={project.url || `https://github.com/YugBargaway2006/${project.slug}`}
+                      href={project.url || sourceLink}
                       target="_blank"
                       rel="noreferrer"
                     >
@@ -132,11 +158,14 @@ export default function Index({ data }) {
                       {project.writeup && (
                         <Link to={project.writeup}>Article</Link>
                       )}
-                      {project.url && (
+                      {project.url && project.url !== sourceLink && (
                         <a href={project.url} target="_blank" rel="noreferrer">
-                          Source
+                          Demo
                         </a>
                       )}
+                      <a href={sourceLink} target="_blank" rel="noreferrer">
+                        Source
+                      </a>
                     </div>
                   </div>
                 )
