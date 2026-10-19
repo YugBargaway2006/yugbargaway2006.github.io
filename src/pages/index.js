@@ -116,7 +116,7 @@ export default function Index({ data }) {
 
           <div className="cards">
             {projectsList
-              .filter((project) => project.highlight)
+              .slice(0, 6)
               .map((project) => {
                 const sourceLink =
                   project.sourceUrl ||
