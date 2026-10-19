@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react'
 import { Link, graphql } from 'gatsby'
-
 import Helmet from 'react-helmet'
 
 import { Layout } from '../components/Layout'
@@ -10,7 +9,8 @@ import { Heading } from '../components/Heading'
 import { Hero } from '../components/Hero'
 import { PageLayout } from '../components/PageLayout'
 import { projectsList } from '../data/projectsList'
-import { getSimplifiedPosts } from '../utils/helpers'
+import { shelvesList } from '../data/shelvesList'
+import { getSimplifiedPosts, slugify } from '../utils/helpers'
 import config from '../utils/config'
 import github from '../assets/nav-github.png'
 
@@ -71,7 +71,11 @@ export default function Index({ data }) {
               </p>
             </div>
             <div className="hero-image-container">
-              <img src="/yug-profile.jpg" className="hero-image" alt="Yug Bargaway" />
+              <img src="/ram.png" className="hero-image" alt="RAM Ram" />
+              <aside className="hero-bubble">
+                Can't remember how to spell my name? Just go to{' '}
+                <a href="https://tania.dev">tania.dev</a>!
+              </aside>
             </div>
           </div>
         </Hero>
@@ -79,6 +83,32 @@ export default function Index({ data }) {
         <section className="section-index">
           <Heading title="Latest" slug="/blog" buttonText="All Posts" />
           <Posts data={recent} detailed />
+        </section>
+
+        <section className="section-index">
+          <Heading
+            title="Shelves"
+            slug="/shelves"
+            buttonText="All Shelves"
+            description="Hand-picked paths through everything I've written."
+          />
+          <div className="cards cards-half">
+            {shelvesList.map((shelf) => (
+              <Link
+                className="card card-highlight card-shelf"
+                to={`/shelves#${slugify(shelf.title)}`}
+                key={shelf.title}
+              >
+                <div className="flex-space-between">
+                  <div className="card-title">{shelf.title}</div>
+                  <div className="chip">
+                    <span className="chip-highlight">{shelf.links.length}</span>
+                  </div>
+                </div>
+                <p>{shelf.description}</p>
+              </Link>
+            ))}
+          </div>
         </section>
 
         <section>
