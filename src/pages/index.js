@@ -38,15 +38,9 @@ export default function Index({ data }) {
               <Heading title="A brief timeline" small />
               <ul className="hero-eras">
                 <li>
-                  <span className="era-dates">2006&ndash;2018</span>
+                  <span className="era-dates">2006&ndash;2024</span>
                   <span>
-                    Curious kid: video games, math olympiads, and tinkering with computers.
-                  </span>
-                </li>
-                <li>
-                  <span className="era-dates">2018&ndash;2024</span>
-                  <span>
-                    Fell in love with competitive programming. Started building projects in C++ and Python.
+                    Curious kid, video games, movies and tinkering with computers. Recommendation: Steppenwolf Project
                   </span>
                 </li>
                 <li>
@@ -60,21 +54,20 @@ export default function Index({ data }) {
                     >
                       projects on GitHub
                     </a>
-                    , grinding competitive programming (Codeforces Expert, 1742), and exploring ML &amp; systems.{' '}
+                    , grinding competitive programming, and exploring ML and Software &amp; systems.{' '}
                     <Link to="/blog">{postCount} post{postCount !== 1 ? 's' : ''}</Link> so far.
                   </span>
                 </li>
               </ul>
               <p className="hero-description">
-                <Link to="/me">Also</Link>: algorithmic problem solver, robotics explorer,
-                low-latency systems enthusiast.
+                <Link to="/me">Also</Link>: algorithmic problem solver, robotics explorer, C++ programmer
+                systems enthusiast.
               </p>
             </div>
             <div className="hero-image-container">
               <img src="/ram.png" className="hero-image" alt="RAM Ram" />
               <aside className="hero-bubble">
-                Can't remember how to spell my name? Just go to{' '}
-                <a href="https://tania.dev">tania.dev</a>!
+                Can't remember how to spell my name? Practice hard!
               </aside>
             </div>
           </div>

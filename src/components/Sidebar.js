@@ -11,6 +11,7 @@ import { Mail } from '../assets/Mail'
 import { Bluesky } from '../assets/Bluesky'
 import { Rss } from '../assets/Rss'
 import { GitHub } from '../assets/GitHub'
+import { Speech } from '../assets/Speech'
 
 export const Sidebar = ({
   theme,
@@ -23,21 +24,21 @@ export const Sidebar = ({
   const subLinks = subNavLinks
   const socialLinks = [
     {
-      url: 'https://taniarascia.substack.com',
-      label: 'Email signup',
+      url: 'mailto:bargawayyug@gmail.com',
+      label: 'Email Contact',
       Icon: Mail,
     },
-    { url: 'https://github.com/taniarascia', label: 'GitHub', Icon: GitHub },
+    { url: 'https://github.com/YugBargaway2006', label: 'GitHub', Icon: GitHub },
     {
-      url: 'https://bsky.app/profile/tania.dev',
+      url: 'https://bsky.app/profile/yug31.bsky.social',
       label: 'Bluesky',
       Icon: Bluesky,
     },
     { url: '/rss.xml', label: 'RSS feed', Icon: Rss },
     {
-      url: 'https://taniarascia.github.io/new-moon/',
-      label: 'New Moon',
-      image: newMoon?.publicURL,
+      url: 'https://github.com/YugBargaway2006/Beyond-Sound_AI-Powered-Visual-Speech-Recognition',
+      label: 'LipNet',
+      Icon: Speech,
     },
   ]
 
@@ -50,13 +51,13 @@ export const Sidebar = ({
               <img
                 src={floppyLogo}
                 className="navbar-logo"
-                alt="tania.dev"
+                alt="yugbargaway"
                 title="💾"
                 height="16"
                 width="16"
               />
             </span>
-            <span className="site-name">tania.dev</span>
+            <span className="site-name">yugbargaway</span>
           </Link>
           <div className="flex-align-center">
             <ColorDropdown
@@ -83,8 +84,8 @@ export const Sidebar = ({
       <section className="sidebar-section">
         <div className="sidebar-content">
           <p>
-            I'm <Link to="/me">Tania</Link>, software engineer and open-source
-            creator. This is my digital garden. 🌱
+            I'm <Link to="/me">Yug</Link>, software engineer and open-source
+            contributor. This is my digital garden. 🌱
           </p>
         </div>
       </section>
