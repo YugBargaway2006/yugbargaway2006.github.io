@@ -10,7 +10,7 @@ import { Close } from '../assets/Close'
 import { ColorDropdown } from './ColorDropdown'
 import { mainNavLinks as links } from '../data/navLinks'
 
-const socialLinks = [{ url: 'https://bsky.app/profile/tania.dev' }]
+const socialLinks = [{ url: 'https://bsky.app/profile/yug31.bsky.social' }]
 
 export const Navigation = ({
   handleUpdateTheme,
@@ -37,22 +37,21 @@ export const Navigation = ({
               <img
                 src={floppyLogo}
                 className="navbar-logo"
-                alt="tania.dev"
+                alt="yugbargaway.netlify.app"
                 title="💾"
                 height="16"
                 width="16"
               />
             </span>
-            <span className="site-name">tania.dev</span>
+            <span className="site-name">yugbargaway.netlify.app</span>
           </Link>
         </div>
       </div>
       <div className="navbar-container">
         <section className="navbar-section">
           <button
-            className={`navbar-button nav-menu-button ${
-              navOpen ? 'active' : ''
-            }`}
+            className={`navbar-button nav-menu-button ${navOpen ? 'active' : ''
+              }`}
             onClick={handleToggleMobileNav}
           >
             {navOpen ? <Close /> : <Menu />}
