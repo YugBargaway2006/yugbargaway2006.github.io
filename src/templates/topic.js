@@ -18,7 +18,7 @@ export default function TopicTemplate({ data, pageContext }) {
   const simplifiedPosts = useMemo(() => getSimplifiedPosts(posts), [posts])
   const message = totalCount === 1 ? ' post' : ' posts'
   const topicName = formatTopic(tag)
-  const description = `All posts about ${topicName} written by Tania Rascia.`
+  const description = `All posts about ${topicName} written by Yug Bargaway.`
 
   return (
     <>

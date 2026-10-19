@@ -34,7 +34,7 @@ export default function Index({ data }) {
             <div>
               <h1 className="flex-align-center gap">Hey, I'm Yug!</h1>
               <p className="hero-description hero-tagline">
-                CS student at IIT Kharagpur. Systems builder, ML engineer, competitive programmer.
+                CS student at IIT Kharagpur. Systems builder, ML engineer, competitive programmer, all-around nerd.
               </p>
               <Heading title="A brief timeline" small />
               <ul className="hero-eras">

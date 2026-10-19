@@ -71,7 +71,7 @@ module.exports = {
       resolve: 'gatsby-plugin-manifest',
       options: {
         name: "Yug Bargaway",
-        short_name: 'taniarascia.com',
+        short_name: 'yugbargaway.netlify.app',
         description:
           'B.Tech CS student at IIT Kharagpur. Competitive programmer, ML engineer, and systems builder.',
         start_url: '/',
@@ -118,7 +118,7 @@ module.exports = {
                   categories: edge.node.frontmatter.tags,
                   custom_elements: [
                     { 'content:encoded': html },
-                    { author: 'hello@taniarascia.com' },
+                    { author: 'bargawayyug@gmail.com' },
                   ],
                 })
               })
@@ -157,7 +157,7 @@ module.exports = {
             }
             `,
             output: '/rss.xml',
-            title: 'Tania Rascia | RSS Feed',
+            title: 'Yug Bargaway | RSS Feed',
           },
         ],
       },
